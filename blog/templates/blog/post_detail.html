@@ -44,14 +44,13 @@
         max-width: 900px; margin: -120px auto 0 auto;
         background: #121212; padding: 100px 80px;
         position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        border: 1px solid #1a1a1a; padding-bottom: 20px; /* Убрал отступ внизу контейнера */
+        border: 1px solid #1a1a1a; padding-bottom: 20px;
     }
 
     h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.1; text-align: center; margin-bottom: 40px; letter-spacing: -1px; }
     .category-tag { display: block; text-align: center; text-transform: uppercase; letter-spacing: 5px; color: #A04000; font-size: 0.75rem; margin-bottom: 25px; }
     .article-body { font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 2; color: #BDC3C7; white-space: pre-line; margin-bottom: 80px; font-weight: 300; }
 
-    /* Убрал padding-bottom, чтобы чат сел ниже */
     .comments-section { border-top: 1px solid #222; padding-top: 60px; padding-bottom: 0px; }
 
     .comments-list-wrapper {
@@ -84,7 +83,6 @@
         width: 100%; font-weight: bold; font-size: 0.8rem;
     }
 
-    /* СТИЛИ КАРУСЕЛИ */
     .carousel-container { padding: 80px 0; background: #080808; position: relative; border-top: 1px solid #1a1a1a;}
     .section-title { text-align: center; font-family: 'Cormorant Garamond'; font-size: 2.2rem; letter-spacing: 6px; margin-bottom: 50px; color: #FAF9F6; text-transform: uppercase; }
     .swiper { padding-bottom: 80px !important; padding-left: 20px; opacity: 0; }
@@ -108,7 +106,10 @@
         .hero-image { height: 50vh; }
         .comments-list-wrapper { min-height: 100px; }
         .comment-form { position: static; margin-top: 30px; margin-left: 0; margin-right: 0; padding: 30px 0 0 0; backdrop-filter: none; background: transparent; border-top: 1px solid #222; }
-        .back-arrow { top: 20px; left: 20px; font-size: 0.6rem; padding: 8px 12px; }
+
+        /* ИСПРАВЛЕНИЕ СТРЕЛКИ: Опустили ниже меню */
+        .back-arrow { top: 90px !important; left: 20px; font-size: 0.6rem; padding: 8px 12px; }
+
         .swiper-slide { width: 290px; }
         .slide-img { height: 220px; }
     }
@@ -238,7 +239,6 @@
         document.getElementById('cancel-reply').style.display = 'none';
     }
 
-    // Инициализация карусели
     if (document.querySelector('.mySwiper')) {
         var swiper = new Swiper(".mySwiper", {
             slidesPerView: "auto",

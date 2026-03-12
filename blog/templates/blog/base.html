@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <meta name="description" content="{% block meta_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
+    <meta name="description"
+          content="{% block meta_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,23 +14,38 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:title" content="{% block og_title %}STATE of MIND — Editorial & Coaching{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}{% static 'images/default_share.jpg' %}{% endblock %}">
 
     <title>{% block title %}State of Mind{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
     <style>
-        /* --- 1. ГЛОБАЛЬНАЯ БАЗА --- */
-        html { scroll-behavior: smooth; }
+        /* --- 1. ГЛОБАЛЬНАЯ БАЗА И АНТИ-МЕРЦАНИЕ --- */
+        html {
+            scroll-behavior: smooth;
+            background-color: #080808; /* Жестко красим самую подложку, чтобы не было белых вспышек */
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             background-color: #080808; color: white;
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+
+            /* МАГИЯ ПЛАВНОГО ПОЯВЛЕНИЯ */
+            opacity: 0;
+            animation: fadeInBody 0.6s ease-in forwards;
+        }
+
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* --- 2. УВЕДОМЛЕНИЯ --- */
@@ -60,7 +76,7 @@
 
         nav a {
             letter-spacing: 3px; font-size: 0.7rem; color: white !important;
-            opacity: 0.8; /* ИСПРАВЛЕН КОНТРАСТ ДЛЯ GOOGLE */
+            opacity: 0.8;
             text-decoration: none; text-transform: uppercase;
             transition: opacity 0.3s ease, color 0.3s ease;
         }
@@ -91,7 +107,7 @@
         .global-footer { padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
-        .footer-bottom { margin-top: 80px; opacity: 0.6; /* ИСПРАВЛЕН КОНТРАСТ */ font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
+        .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
 
         /* --- 6. ПЛАВАЮЩАЯ КНОПКА --- */
         .mobile-fab {
@@ -100,10 +116,15 @@
 
         /* --- 7. АДАПТИВНОСТЬ: ПЛАНШЕТЫ (iPad) --- */
         @media (max-width: 1200px) {
-            nav { padding: 0 20px; }
-            .nav-links { gap: 20px; }
-            nav a { font-size: 0.6rem; letter-spacing: 2px; }
-            .cta-button { padding: 10px 15px; font-size: 0.55rem; letter-spacing: 1px; }
+            nav { padding: 0 15px; }
+            .nav-links { gap: 10px; }
+            nav a { font-size: 0.55rem; letter-spacing: 1px; }
+            .cta-button { padding: 8px 12px; font-size: 0.5rem; letter-spacing: 1px; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .about-image img { max-width: 450px !important; height: auto !important; margin: 0 auto; display: block; }
+            .about-container { flex-direction: column !important; text-align: center !important; }
         }
 
         /* --- 8. АДАПТИВНОСТЬ: ТЕЛЕФОНЫ --- */
@@ -124,7 +145,7 @@
     {% block extra_css %}{% endblock %}
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body style="background-color: #080808 !important; color: #ffffff !important;">
 
 {% if messages %}
 <div class="toast-container">
@@ -159,7 +180,8 @@
 <footer class="global-footer" id="contact" role="contentinfo">
     <div class="footer-cta">
         <h2>ГОТОВЫ К ТРАНСФОРМАЦИИ?</h2>
-        <a href="https://t.me/stateofmind_assistant_bot" class="tg-button" aria-label="Написать в Telegram">НАПИСАТЬ В TELEGRAM</a>
+        <a href="https://t.me/stateofmind_assistant_bot" class="tg-button" aria-label="Написать в Telegram">НАПИСАТЬ В
+            TELEGRAM</a>
     </div>
     <div class="footer-bottom">
         © 2026 STATE OF MIND — EDITORIAL & COACHING
