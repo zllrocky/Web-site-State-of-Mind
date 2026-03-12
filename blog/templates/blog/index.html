@@ -1,0 +1,204 @@
+{% extends 'blog/base.html' %}
+
+{% block extra_head %}
+    {% if settings.hero_image %}
+        <link rel="preload" as="image" href="{{ settings.hero_image.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* 1. ОПТИМИЗИРОВАННЫЕ ТРАНЗИЦИИ */
+    nav a, .hero-brand h1, .main-story-card, .story-image img, .story-content,
+    .comment-pill i, .card-link, .slide-img, .arrow-circle, .swiper-button-next {
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    body { background-color: #080808; overflow-x: hidden; }
+
+    /* 2. HERO BRAND */
+    .hero-brand {
+        height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .brand-center h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 6.5rem;
+        letter-spacing: 18px;
+        margin: 0;
+        color: white;
+    }
+    .hero-brand:hover .brand-center h1 {
+        letter-spacing: 25px;
+        color: #A04000;
+        text-shadow: 0 0 50px rgba(160, 64, 0, 0.4);
+    }
+    .brand-center p { letter-spacing: 6px; color: #BDC3C7; text-transform: uppercase; font-size: 0.85rem; margin-top: 20px; }
+
+    /* 3. MAIN STORY (OVERLAP) */
+    .main-story-section { padding: 120px 40px; background: #0c0c0c; }
+    .main-story-container { max-width: 1300px; margin: 0 auto; position: relative; }
+    .main-story-card { display: flex; text-decoration: none; position: relative; }
+
+    .story-image { width: 80%; height: 650px; overflow: hidden; border: 1px solid #222; }
+    .story-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%) brightness(0.8); }
+
+    .story-content {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 480px;
+        padding: 60px;
+        background: #161616;
+        border: 1px solid #333;
+        z-index: 10;
+        box-shadow: 30px 30px 80px rgba(0,0,0,0.9);
+    }
+
+    .main-story-card:hover .story-image img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
+    .main-story-card:hover .story-content { border-color: #A04000; transform: translateY(-55%); }
+
+    .story-content h2 { font-family: 'Cormorant Garamond'; font-size: 3rem; line-height: 1.1; margin: 25px 0; color: white; }
+    .story-content p { color: #BDC3C7; line-height: 1.8; font-size: 1.05rem; font-weight: 300; margin-bottom: 35px; }
+
+    /* 4. СЧЕТЧИКИ */
+    .comment-pill { display: inline-flex; align-items: center; gap: 12px; font-size: 0.65rem; letter-spacing: 2px; color: #7F8C8D; }
+    .comment-pill i { font-size: 0.75rem; font-style: normal; border: 1px solid #444; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+
+    .main-story-card:hover .comment-pill i, .card-link:hover .comment-pill i {
+        border-color: #A04000; color: #A04000; background: rgba(160, 64, 0, 0.05);
+    }
+
+    /* 5. КАРУСЕЛЬ */
+    .carousel-container { padding: 100px 0; background: #080808; position: relative; }
+    .section-title { text-align: center; font-family: 'Cormorant Garamond'; font-size: 2.2rem; letter-spacing: 6px; margin-bottom: 70px; color: #FAF9F6; text-transform: uppercase; }
+
+    .swiper { padding-bottom: 100px !important; padding-left: 40px; opacity: 0; }
+    .swiper-initialized { opacity: 1; }
+    .swiper-slide { width: 400px; visibility: hidden; }
+    .swiper-initialized .swiper-slide { visibility: visible; }
+
+    .card-link { display: block; background: #121212; border: 1px solid #222; text-decoration: none; }
+    .card-link:hover { border-color: #A04000; transform: translateY(-10px); }
+
+    .slide-img { width: 100%; height: 280px; object-fit: cover; filter: brightness(0.6); }
+    .card-link:hover .slide-img { filter: brightness(1); }
+    .slide-text { padding: 30px; }
+    .category { color: #A04000; font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 15px; display: block; }
+    .slide-text h3 { font-family: 'Cormorant Garamond'; font-size: 1.7rem; margin: 0 0 15px 0; color: white; line-height: 1.3; }
+
+    .swiper-button-next {
+        top: auto !important; bottom: 25px !important; left: 50% !important; right: auto !important;
+        transform: translateX(-50%); color: #A04000 !important; width: 120px !important;
+    }
+    .swiper-button-next::after { content: '→' !important; font-family: 'Montserrat', sans-serif !important; font-size: 3.5rem !important; font-weight: 100 !important; }
+    .swiper-button-next:hover { letter-spacing: 20px; color: #FAF9F6 !important; }
+
+    .all-posts-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: transparent !important; border: none !important; }
+    .arrow-circle { width: 65px; height: 65px; border: 1px solid #A04000; border-radius: 50%; line-height: 62px; text-align: center; font-size: 1.4rem; color: #A04000; margin-bottom: 20px; }
+    .all-posts-slide:hover .arrow-circle { background: #A04000; color: white; transform: scale(1.1); }
+
+    /* 6. АДАПТИВНОСТЬ */
+    @media (max-width: 992px) {
+        .brand-center h1 { font-size: 3.5rem; letter-spacing: 10px; }
+        .main-story-container { padding: 0; }
+        .main-story-card { flex-direction: column; display: flex; }
+        .story-image { width: 100%; height: 350px; }
+        .story-content { position: static; width: 100%; transform: none !important; padding: 40px 30px; border-left: none; border-top: 1px solid #222; }
+        .story-content h2 { font-size: 2rem; }
+        .swiper-slide { width: 300px; }
+        .section-title { font-size: 1.8rem; }
+    }
+
+    @media (max-width: 480px) {
+        .brand-center h1 { font-size: 2.5rem; letter-spacing: 5px; }
+        .story-image { height: 250px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-brand"
+         style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                url('{% if settings.hero_image %}{{ settings.hero_image.url }}{% endif %}') center/cover;">
+    <div class="brand-center">
+        <h1>{{ settings.hero_title|default:"STATE OF MIND" }}</h1>
+        <p>{{ settings.hero_subtitle|default:"Editorial & Coaching by Julia" }}</p>
+    </div>
+</section>
+
+{% if featured_post %}
+<section class="main-story-section">
+    <div class="main-story-container">
+        <a href="{% url 'post_detail' featured_post.pk %}" class="main-story-card">
+            <div class="story-image">
+                <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}" width="800" height="650">
+            </div>
+
+            <div class="story-content">
+                <span style="color: #A04000; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;">Main Editorial</span>
+                <h2>{{ featured_post.title }}</h2>
+                <p>{{ featured_post.content|truncatewords:30 }}</p>
+
+                <div class="comment-pill">
+                    <i>{{ featured_post.approved_comments_count }}</i> МЫСЛЕЙ В ОБСУЖДЕНИИ
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+{% endif %}
+
+<section class="carousel-container">
+    <h2 class="section-title">ДРУГИЕ МЫСЛИ</h2>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            {% for post in posts %}
+            <div class="swiper-slide">
+                <a href="{% url 'post_detail' post.pk %}" class="card-link">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" class="slide-img" loading="lazy" width="400" height="280" alt="{{ post.title }}">
+                    {% endif %}
+                    <div class="slide-text">
+                        <span class="category">{{ post.get_category_display }}</span>
+                        <h3>{{ post.title }}</h3>
+
+                        <div class="comment-pill">
+                            <i>{{ post.approved_comments_count }}</i> ОТКЛИКОВ
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+            <div class="swiper-slide all-posts-slide">
+                <a href="{% url 'all_posts' %}" style="text-align: center; text-decoration: none;">
+                    <div class="arrow-circle">→</div>
+                    <p style="letter-spacing: 4px; font-size: 0.65rem; color: #7F8C8D;">ВЕСЬ АРХИВ</p>
+                </a>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: "auto",
+        centeredSlides: false,
+        spaceBetween: 40,
+        grabCursor: true,
+        observer: true,
+        observeParents: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+        },
+    });
+</script>
+{% endblock %}

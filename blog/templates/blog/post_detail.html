@@ -1,0 +1,160 @@
+{% extends 'blog/base.html' %}
+
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_image %}{{ post.image.url }}{% endblock %}
+{% block title %}{{ post.title }} | State of Mind{% endblock %}
+
+{% block meta_description %}{{ post.content|striptags|truncatewords:20 }}{% endblock %}
+
+{% block extra_head %}
+    {% if post.image %}
+        <link rel="preload" as="image" href="{{ post.image.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Твои стили без изменений */
+    .back-arrow, .hero-image img, .container, .submit-btn, .reply-btn {
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    body { background-color: #080808; color: #FAF9F6; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+
+    .back-arrow {
+        position: fixed; top: 40px; left: 40px;
+        display: inline-flex; align-items: center; gap: 15px;
+        text-decoration: none !important;
+        color: rgba(255,255,255,0.5);
+        font-size: 0.7rem; letter-spacing: 3px;
+        z-index: 1000;
+        text-transform: uppercase;
+    }
+    .back-arrow:hover { color: #FAF9F6 !important; transform: translateX(-10px); }
+    .back-arrow span { font-size: 1.4rem; color: #7F8C8D; }
+    .back-arrow:hover span { color: #A04000; }
+
+    .hero-image { width: 100%; height: 75vh; overflow: hidden; position: relative; }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); }
+
+    .container {
+        max-width: 900px; margin: -120px auto 0 auto;
+        background: #121212; padding: 100px 80px;
+        position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        border: 1px solid #1a1a1a; padding-bottom: 60px;
+    }
+
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: 4rem; line-height: 1.1; text-align: center; margin-bottom: 40px; letter-spacing: -1px; }
+    .category-tag { display: block; text-align: center; text-transform: uppercase; letter-spacing: 5px; color: #A04000; font-size: 0.75rem; margin-bottom: 25px; }
+    .article-body { font-size: 1.2rem; line-height: 2; color: #BDC3C7; white-space: pre-line; margin-bottom: 80px; font-weight: 300; }
+
+    .comments-section { border-top: 1px solid #222; padding-top: 60px; padding-bottom: 50px; }
+    .comment-card { margin-bottom: 40px; }
+    .author-name { font-weight: 600; font-size: 0.8rem; color: #FAF9F6; text-transform: uppercase; letter-spacing: 2px; }
+    .comment-text { color: #888; line-height: 1.7; margin: 15px 0; font-size: 1rem; }
+
+    .comment-form {
+        position: sticky; bottom: 0;
+        background: rgba(18, 18, 18, 0.98);
+        backdrop-filter: blur(15px);
+        padding: 30px 40px; border-top: 1px solid #222;
+        margin-top: 80px; z-index: 100;
+        margin-left: -80px; margin-right: -80px;
+    }
+
+    .comment-form input, .comment-form textarea {
+        width: 100%; background: #080808; border: 1px solid #222;
+        color: white; padding: 15px; margin-bottom: 15px;
+        font-family: inherit; font-size: 0.9rem;
+    }
+    .submit-btn {
+        background: #A04000; color: white; border: none; padding: 18px;
+        text-transform: uppercase; letter-spacing: 3px; cursor: pointer;
+        width: 100%; font-weight: bold; font-size: 0.8rem;
+    }
+
+    @media (max-width: 992px) {
+        .container { margin-top: -60px; padding: 60px 40px; }
+        .hero-image { height: 50vh; }
+        .comment-form { position: static; margin-top: 50px; margin-left: -40px; margin-right: -40px; padding: 30px; backdrop-filter: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'index' %}" class="back-arrow">
+    <span>←</span> На главную
+</a>
+
+{% if post.image %}
+<div class="hero-image">
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" fetchpriority="high" width="1200" height="800">
+</div>
+{% endif %}
+
+<div class="container">
+    <span class="category-tag">{{ post.get_category_display }}</span>
+    <h1>{{ post.title }}</h1>
+    <div class="article-body">{{ post.content }}</div>
+
+    <div class="comments-section" id="comments">
+        <h3 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin-bottom: 40px; font-size: 1.5rem;">
+            ОТКЛИКИ ({{ post.comments.count }})
+        </h3>
+
+        {% for comment in comments %}
+            {% if not comment.parent %}
+            <div class="comment-card">
+                <span class="author-name">{{ comment.author_name }}</span>
+                <div class="comment-text">{{ comment.text }}</div>
+                <button class="reply-btn"
+                        style="background:none; border:none; color:#A04000; cursor:pointer; font-size:0.7rem; letter-spacing:1px; text-transform:uppercase;"
+                        onclick="setParent('{{ comment.id }}', '{{ comment.author_name }}')">Ответить</button>
+
+                {% for reply in comment.replies.all %}
+                    {% if reply.is_approved %}
+                    <div style="margin-left: 30px; border-left: 1px solid #222; padding-left: 30px; margin-top: 20px;">
+                        <span class="author-name" style="font-size: 0.7rem;">{{ reply.author_name }}</span>
+                        <div class="comment-text" style="font-size: 0.95rem;">{{ reply.text }}</div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="comment-form" id="comment-form-anchor">
+            <h4 id="form-title" style="font-family: 'Cormorant Garamond'; text-align: center; color: #A04000; letter-spacing: 4px; margin-bottom: 20px;">ОСТАВИТЬ ОТКЛИК</h4>
+            <a href="javascript:void(0)" id="cancel-reply" onclick="cancelReply()" style="display:none; color: #566573; font-size: 0.6rem; text-decoration: none; margin-bottom: 15px; text-align: center; display: block; letter-spacing: 2px;">ОТМЕНИТЬ ОТВЕТ</a>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="parent_id" id="parent_id_input" value="">
+                {{ form.author_name }}
+                {{ form.text }}
+                <button type="submit" class="submit-btn">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="divider" style="width: 80px; height: 1px; background: #333; margin: 80px auto;"></div>
+    <footer style="text-align: center; font-size: 0.7rem; color: #444; letter-spacing: 3px; padding-bottom: 40px;">
+        ОПУБЛИКОВАНО: {{ post.created_at|date:"d E Y" }}
+    </footer>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function setParent(id, name) {
+        document.getElementById('parent_id_input').value = id;
+        document.getElementById('comment-form-anchor').scrollIntoView({behavior: 'smooth'});
+        document.getElementById('form-title').innerText = 'ОТВЕТИТЬ ' + name.toUpperCase();
+        document.getElementById('cancel-reply').style.display = 'block';
+    }
+    function cancelReply() {
+        document.getElementById('parent_id_input').value = '';
+        document.getElementById('form-title').innerText = 'ОСТАВИТЬ ОТКЛИК';
+        document.getElementById('cancel-reply').style.display = 'none';
+    }
+</script>
+{% endblock %}

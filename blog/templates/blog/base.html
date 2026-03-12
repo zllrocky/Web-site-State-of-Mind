@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="{% block meta_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}STATE of MIND — Editorial & Coaching{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/default_share.jpg' %}{% endblock %}">
+
+    <title>{% block title %}State of Mind{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+<style>
+    /* 3. ГЛОБАЛЬНЫЕ НАСТРОЙКИ */
+    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        background-color: #080808;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* 4. ТОЧЕЧНЫЕ АНИМАЦИИ */
+    nav a, .cta-button, .tg-button, .back-arrow, .card-link, .main-story-card, .comment-pill i, .toast-message {
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 5. УВЕДОМЛЕНИЯ (TOAST) */
+    .toast-container {
+        position: fixed; top: 100px; right: 40px; z-index: 10000;
+    }
+    .toast-message {
+        background: #1a1a1a; border-left: 4px solid #A04000;
+        color: white; padding: 20px 30px; margin-bottom: 10px;
+        font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: slideIn 0.5s ease forwards;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* 6. НАВИГАЦИЯ */
+    nav {
+        position: fixed; top: 0; width: 100%; display: flex;
+        justify-content: center; align-items: center;
+        padding: 30px 40px; z-index: 1000;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    }
+    .nav-links { display: flex; gap: 40px; }
+    nav a {
+        letter-spacing: 3px; font-size: 0.7rem; color: white !important;
+        opacity: 0.6; text-decoration: none; text-transform: uppercase;
+    }
+    nav a:hover { opacity: 1; color: #A04000 !important; letter-spacing: 5px; }
+
+    .nav-cta { position: absolute; right: 40px; }
+    .cta-button {
+        padding: 12px 25px; border: 1px solid #A04000;
+        color: #A04000 !important; font-size: 0.65rem;
+        letter-spacing: 2px; font-weight: 600; text-transform: uppercase;
+        background: transparent; text-decoration: none;
+    }
+    .cta-button:hover {
+        background: #A04000; color: white !important;
+        transform: scale(1.05); box-shadow: 0 0 20px rgba(160, 64, 0, 0.3);
+    }
+
+    /* 7. ФУТЕР */
+    .global-footer {
+        padding: 120px 40px; background: #080808;
+        border-top: 1px solid #1a1a1a; text-align: center;
+    }
+    .footer-cta h2 {
+        font-family: 'Cormorant Garamond', serif; font-size: 3rem;
+        letter-spacing: 10px; color: white; margin-bottom: 50px; text-transform: uppercase;
+    }
+    .tg-button {
+        display: inline-block; padding: 22px 60px; border: 1px solid #A04000;
+        color: #A04000 !important; text-decoration: none !important;
+        font-size: 0.75rem; letter-spacing: 5px; font-weight: 600; text-transform: uppercase;
+    }
+    .tg-button:hover {
+        background: #A04000; color: white !important;
+        transform: translateY(-8px); box-shadow: 0 20px 40px rgba(160, 64, 0, 0.3);
+    }
+    .footer-bottom { margin-top: 80px; opacity: 0.3; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
+
+    @media (max-width: 768px) {
+        .nav-cta { display: none; }
+        .nav-links { gap: 20px; }
+        nav { padding: 20px; }
+        .footer-cta h2 { font-size: 1.8rem; letter-spacing: 5px; }
+        .toast-container { right: 20px; left: 20px; top: 20px; }
+    }
+</style>
+    {% block extra_css %}{% endblock %}
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% if messages %}
+<div class="toast-container">
+    {% for message in messages %}
+    <div class="toast-message">{{ message }}</div>
+    {% endfor %}
+</div>
+<script>
+    setTimeout(() => {
+        const container = document.querySelector('.toast-container');
+        if (container) container.style.opacity = '0';
+        setTimeout(() => { if (container) container.remove(); }, 500);
+    }, 5000);
+</script>
+{% endif %}
+
+<nav>
+    <div class="nav-links">
+        <a href="{% url 'index' %}">ГЛАВНАЯ</a>
+        <a href="{% url 'all_posts' %}">МЫСЛИ</a>
+        <a href="{% url 'about' %}">ОБ АВТОРЕ</a>
+    </div>
+    <div class="nav-cta">
+        <a href="#contact" class="cta-button">Записаться на консультацию</a>
+    </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer class="global-footer" id="contact">
+    <div class="footer-cta">
+        <h2>ГОТОВЫ К ТРАНСФОРМАЦИИ?</h2>
+        <a href="https://t.me/stateofmind_assistant_bot" class="tg-button">НАПИСАТЬ В TELEGRAM</a>
+    </div>
+    <div class="footer-bottom">
+        © 2026 STATE OF MIND — EDITORIAL & COACHING
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
