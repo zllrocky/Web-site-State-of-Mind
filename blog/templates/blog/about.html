@@ -2,7 +2,7 @@
 
 {% block extra_css %}
 <style>
-    /* 1. ДЕСКТОП (Твой базовый крутой стиль) */
+    /* 1. ДЕСКТОП */
     .about-section {
         padding: 180px 40px 100px 40px;
         max-width: 1200px;
@@ -18,11 +18,11 @@
 
     .about-image {
         width: 100%;
-        height: auto;
+        height: auto; /* ВОЗВРАЩАЕМ АВТО ВЫСОТУ, ЧТОБЫ НЕ МЫЛИЛО */
         border: 1px solid #333;
         filter: grayscale(20%);
         display: block;
-        object-fit: cover;
+        border-radius: 4px; /* Легкое скругление для стиля */
     }
 
     .about-content {
@@ -54,10 +54,10 @@
         text-align: left;
     }
 
-    /* 2. ПЛАНШЕТЫ (iPad) - Исправляем твою "беду" */
+    /* 2. ПЛАНШЕТЫ (iPad) */
     @media (min-width: 769px) and (max-width: 1100px) {
         .about-section {
-            flex-direction: column; /* Текст под фото */
+            flex-direction: column;
             gap: 40px;
             padding: 140px 40px 80px 40px;
             text-align: center;
@@ -65,7 +65,7 @@
 
         .about-image-wrapper {
             width: 100%;
-            max-width: 500px; /* Кот больше не будет огромным */
+            max-width: 500px;
             margin: 0 auto;
         }
 
@@ -74,12 +74,12 @@
         }
 
         .about-bio {
-            text-align: center; /* Центрируем текст для красоты на планшете */
+            text-align: center;
             padding: 0 20px;
         }
     }
 
-    /* 3. МОБИЛКА (Твоя "Пушка") */
+    /* 3. МОБИЛКА */
     @media (max-width: 768px) {
         .about-section {
             flex-direction: column;
@@ -118,7 +118,12 @@
 <section class="about-section">
     {% if author.photo %}
     <div class="about-image-wrapper">
-        <img src="{{ author.photo.url }}" alt="{{ author.name }}" class="about-image" fetchpriority="high">
+        <img src="{{ author.photo.url }}"
+             alt="{{ author.name }}"
+             class="about-image"
+             width="{{ author.photo.width }}"
+             height="{{ author.photo.height }}"
+             fetchpriority="high">
     </div>
     {% endif %}
 

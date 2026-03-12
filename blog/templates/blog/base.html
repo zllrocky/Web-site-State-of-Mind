@@ -29,7 +29,7 @@
             background-color: #080808; color: white;
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden; /* Защита от сдвигов влево/вправо */
+            overflow-x: hidden;
         }
 
         /* --- 2. УВЕДОМЛЕНИЯ --- */
@@ -52,15 +52,16 @@
         }
         .nav-links {
             display: flex; gap: 40px;
-            justify-self: center; /* Всегда мертво по центру */
+            justify-self: center;
         }
         .nav-cta-wrapper {
-            justify-self: end; /* Кнопка всегда справа */
+            justify-self: end;
         }
 
         nav a {
             letter-spacing: 3px; font-size: 0.7rem; color: white !important;
-            opacity: 0.6; text-decoration: none; text-transform: uppercase;
+            opacity: 0.8; /* ИСПРАВЛЕН КОНТРАСТ ДЛЯ GOOGLE */
+            text-decoration: none; text-transform: uppercase;
             transition: opacity 0.3s ease, color 0.3s ease;
         }
 
@@ -73,7 +74,6 @@
         }
 
         /* --- 4. ПРОФЕССИОНАЛЬНЫЕ КЛИКИ И ХОВЕРЫ --- */
-        /* Только для устройств с мышкой (Компьютеры) */
         @media (hover: hover) and (pointer: fine) {
             nav a:hover { opacity: 1; color: #A04000 !important; }
             .cta-button:hover, .tg-button:hover {
@@ -81,7 +81,6 @@
                 transform: scale(1.03); box-shadow: 0 0 20px rgba(160, 64, 0, 0.3);
             }
         }
-        /* Только для тачскринов (Телефоны/Планшеты) - эффект пружины без залипания */
         @media (hover: none) {
             .cta-button:active, .tg-button:active, .mobile-fab:active {
                 transform: scale(0.96); opacity: 0.8; background: rgba(160, 64, 0, 0.1);
@@ -92,9 +91,9 @@
         .global-footer { padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
-        .footer-bottom { margin-top: 80px; opacity: 0.3; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
+        .footer-bottom { margin-top: 80px; opacity: 0.6; /* ИСПРАВЛЕН КОНТРАСТ */ font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* --- 6. ПЛАВАЮЩАЯ КНОПКА (Скрыта на ПК) --- */
+        /* --- 6. ПЛАВАЮЩАЯ КНОПКА --- */
         .mobile-fab {
             display: none; transition: opacity 0.4s ease, transform 0.4s ease;
         }
@@ -110,10 +109,9 @@
         /* --- 8. АДАПТИВНОСТЬ: ТЕЛЕФОНЫ --- */
         @media (max-width: 768px) {
             nav { grid-template-columns: 1fr; height: 70px; background: rgba(8,8,8,0.98); }
-            .nav-cta-wrapper { display: none; } /* Прячем верхнюю кнопку */
+            .nav-cta-wrapper { display: none; }
             .nav-links { gap: 15px; justify-self: center; width: 100%; justify-content: center; }
 
-            /* Показываем плавающую нижнюю */
             .mobile-fab {
                 display: block; position: fixed; bottom: 30px; right: 20px; z-index: 9999;
                 background: #A04000; color: white; padding: 16px 24px; border-radius: 30px;
@@ -142,33 +140,35 @@
 </script>
 {% endif %}
 
-<nav>
-    <div></div> <div class="nav-links">
+<nav role="navigation">
+    <div></div>
+    <div class="nav-links">
         <a href="{% url 'index' %}">ГЛАВНАЯ</a>
         <a href="{% url 'all_posts' %}">МЫСЛИ</a>
         <a href="{% url 'about' %}">ОБ АВТОРЕ</a>
     </div>
     <div class="nav-cta-wrapper">
-        <a href="#contact" class="cta-button">Записаться на консультацию</a>
+        <a href="#contact" class="cta-button" aria-label="Записаться на консультацию">Записаться на консультацию</a>
     </div>
 </nav>
 
-{% block content %}{% endblock %}
+<main id="main-content">
+    {% block content %}{% endblock %}
+</main>
 
-<footer class="global-footer" id="contact">
+<footer class="global-footer" id="contact" role="contentinfo">
     <div class="footer-cta">
         <h2>ГОТОВЫ К ТРАНСФОРМАЦИИ?</h2>
-        <a href="https://t.me/stateofmind_assistant_bot" class="tg-button">НАПИСАТЬ В TELEGRAM</a>
+        <a href="https://t.me/stateofmind_assistant_bot" class="tg-button" aria-label="Написать в Telegram">НАПИСАТЬ В TELEGRAM</a>
     </div>
     <div class="footer-bottom">
         © 2026 STATE OF MIND — EDITORIAL & COACHING
     </div>
 </footer>
 
-<a href="#contact" class="mobile-fab" id="mobileFab">ЗАПИСЬ</a>
+<a href="#contact" class="mobile-fab" id="mobileFab" aria-label="Быстрая запись">ЗАПИСЬ</a>
 
 <script>
-    // Профессиональный скрипт для исчезновения плавающей кнопки
     window.addEventListener('scroll', function() {
         const fab = document.getElementById('mobileFab');
         const footer = document.querySelector('.global-footer');
