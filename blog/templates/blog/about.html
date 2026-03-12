@@ -2,14 +2,14 @@
 
 {% block extra_css %}
 <style>
-    /* ДЕСКТОП (Оставляем как есть, раз там всё круто) */
+    /* 1. ДЕСКТОП (Твой базовый крутой стиль) */
     .about-section {
         padding: 180px 40px 100px 40px;
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
         display: flex;
         gap: 80px;
-        align-items: center; /* Центрируем по вертикали для баланса */
+        align-items: center;
     }
 
     .about-image-wrapper {
@@ -20,8 +20,9 @@
         width: 100%;
         height: auto;
         border: 1px solid #333;
-        filter: grayscale(50%);
+        filter: grayscale(20%);
         display: block;
+        object-fit: cover;
     }
 
     .about-content {
@@ -53,44 +54,61 @@
         text-align: left;
     }
 
-    /* МОБИЛКА - ДЕЛАЕМ ПУШКУ */
-    @media (max-width: 992px) {
+    /* 2. ПЛАНШЕТЫ (iPad) - Исправляем твою "беду" */
+    @media (min-width: 769px) and (max-width: 1100px) {
+        .about-section {
+            flex-direction: column; /* Текст под фото */
+            gap: 40px;
+            padding: 140px 40px 80px 40px;
+            text-align: center;
+        }
+
+        .about-image-wrapper {
+            width: 100%;
+            max-width: 500px; /* Кот больше не будет огромным */
+            margin: 0 auto;
+        }
+
+        .about-content {
+            width: 100%;
+        }
+
+        .about-bio {
+            text-align: center; /* Центрируем текст для красоты на планшете */
+            padding: 0 20px;
+        }
+    }
+
+    /* 3. МОБИЛКА (Твоя "Пушка") */
+    @media (max-width: 768px) {
         .about-section {
             flex-direction: column;
-            gap: 50px; /* Даем больше воздуха между фото и текстом */
-            padding: 120px 20px 80px 20px;
+            gap: 40px;
+            padding: 110px 20px 60px 20px;
         }
         .about-image-wrapper {
             width: 100%;
             display: flex;
-            justify-content: center; /* Центрируем фото */
+            justify-content: center;
         }
         .about-image {
-            max-width: 85%; /* Сужаем фото, чтобы появились поля */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); /* Добавляем глубину */
-            border: 1px solid #222;
+            max-width: 90%;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
         .about-content {
-            padding: 0 15px;
+            padding: 0 10px;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Центрируем весь блок контента */
-        }
-        .about-subtitle {
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            text-align: center;
+            align-items: center;
         }
         .about-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
             text-align: center;
         }
         .about-bio {
             font-size: 1.05rem;
             line-height: 1.8;
-            color: #95A5A6;
-            text-align: center; /* Принудительно центрируем текст био */
+            text-align: center;
         }
     }
 </style>
