@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
 <style>
-    /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ (ВЫРЕЗАЛИ OVERFLOW, ЧТОБЫ ОЖИВИТЬ УМНЫЙ ЧАТ) */
+    /* 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ (БЕЗ OVERFLOW ДЛЯ ПОДДЕРЖКИ STICKY) */
     html { scroll-behavior: smooth; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -33,15 +33,13 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* АНИМАЦИИ */
-    nav a, .cta-button, .tg-button, .back-arrow, .card-link, .main-story-card, .comment-pill i, .toast-message {
+    /* 2. АНИМАЦИИ */
+    nav a, .cta-button, .tg-button, .back-arrow, .card-link, .main-story-card, .comment-pill i, .toast-message, .mobile-fab {
         transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* УВЕДОМЛЕНИЯ (TOAST) */
-    .toast-container {
-        position: fixed; top: 100px; right: 40px; z-index: 10000;
-    }
+    /* 3. УВЕДОМЛЕНИЯ (TOAST) */
+    .toast-container { position: fixed; top: 100px; right: 40px; z-index: 10000; }
     .toast-message {
         background: #1a1a1a; border-left: 4px solid #A04000;
         color: white; padding: 20px 30px; margin-bottom: 10px;
@@ -54,7 +52,7 @@
         to { transform: translateX(0); opacity: 1; }
     }
 
-    /* НАВИГАЦИЯ */
+    /* 4. НАВИГАЦИЯ */
     nav {
         position: fixed; top: 0; width: 100%; display: flex;
         justify-content: center; align-items: center;
@@ -80,7 +78,7 @@
         transform: scale(1.05); box-shadow: 0 0 20px rgba(160, 64, 0, 0.3);
     }
 
-    /* ФУТЕР */
+    /* 5. ФУТЕР */
     .global-footer {
         padding: 120px 40px; background: #080808;
         border-top: 1px solid #1a1a1a; text-align: center;
@@ -100,7 +98,17 @@
     }
     .footer-bottom { margin-top: 80px; opacity: 0.3; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
 
-    /* АДАПТИВНОСТЬ ДЛЯ МОБИЛОК */
+    /* 6. ФИКС НУЛЕЙ (ЦИФР) */
+    .comment-pill i, .archive-comment-pill i {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* 7. ПЛАВАЮЩАЯ КНОПКА (Mobile Only) */
+    .mobile-fab { display: none; }
+
+    /* 8. АДАПТИВНОСТЬ */
     @media (max-width: 768px) {
         nav { padding: 15px 10px; }
         .nav-cta { display: none; }
@@ -112,6 +120,13 @@
         .footer-cta h2 { font-size: 2rem; letter-spacing: 4px; margin-bottom: 30px; line-height: 1.2; }
         .tg-button { padding: 18px 20px; font-size: 0.65rem; width: 100%; display: block; box-sizing: border-box; letter-spacing: 3px; }
         .footer-bottom { margin-top: 50px; font-size: 0.5rem; }
+
+        .mobile-fab {
+            display: block; position: fixed; bottom: 30px; right: 20px; z-index: 9999;
+            background: #A04000; color: white; padding: 15px 25px; border-radius: 30px;
+            text-decoration: none; font-size: 0.65rem; letter-spacing: 3px; font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #d35400; text-transform: uppercase;
+        }
     }
 </style>
     {% block extra_css %}{% endblock %}
@@ -128,8 +143,10 @@
 <script>
     setTimeout(() => {
         const container = document.querySelector('.toast-container');
-        if (container) container.style.opacity = '0';
-        setTimeout(() => { if (container) container.remove(); }, 500);
+        if (container) {
+            container.style.opacity = '0';
+            setTimeout(() => { container.remove(); }, 500);
+        }
     }, 5000);
 </script>
 {% endif %}
@@ -156,6 +173,8 @@
         © 2026 STATE OF MIND — EDITORIAL & COACHING
     </div>
 </footer>
+
+<a href="#contact" class="mobile-fab">ЗАПИСЬ</a>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 {% block extra_js %}{% endblock %}
