@@ -1,13 +1,12 @@
+import os
+from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-# Вставляем твой токен
-TOKEN = '8649090518:AAHTvHzzz3nzR0_Tgidfqhkrr8ugaAtyEFs'
-
-# ТУТ ВПИШИ НИК ЮЛИ БЕЗ @ (например: yulia_coach)
-YULIA_USERNAME = 'julie_3388'
+TOKEN = os.getenv('BOT_TOKEN')
+YULIA_USERNAME = os.getenv('YULIA_USERNAME')
 
 # Формируем умную ссылку с предзаполненным текстом
 contact_url = f"https://t.me/{YULIA_USERNAME}?text=Здравствуйте,%20Юлия!%20Хочу%20записаться%20на%20сессию."
