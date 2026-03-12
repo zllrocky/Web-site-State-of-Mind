@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <meta name="description" content="{% block meta_description %}Авторский блог и коучинг Юлии. Пространство для трансформации мысли и стиля.{% endblock %}">
 
@@ -23,23 +23,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
 <style>
-    /* 3. ГЛОБАЛЬНЫЕ НАСТРОЙКИ */
+    /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ (ВЫРЕЗАЛИ OVERFLOW, ЧТОБЫ ОЖИВИТЬ УМНЫЙ ЧАТ) */
     html { scroll-behavior: smooth; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
         background-color: #080808;
         color: white;
         font-family: 'Montserrat', sans-serif;
-        overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
     }
 
-    /* 4. ТОЧЕЧНЫЕ АНИМАЦИИ */
+    /* АНИМАЦИИ */
     nav a, .cta-button, .tg-button, .back-arrow, .card-link, .main-story-card, .comment-pill i, .toast-message {
         transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* 5. УВЕДОМЛЕНИЯ (TOAST) */
+    /* УВЕДОМЛЕНИЯ (TOAST) */
     .toast-container {
         position: fixed; top: 100px; right: 40px; z-index: 10000;
     }
@@ -55,7 +54,7 @@
         to { transform: translateX(0); opacity: 1; }
     }
 
-    /* 6. НАВИГАЦИЯ */
+    /* НАВИГАЦИЯ */
     nav {
         position: fixed; top: 0; width: 100%; display: flex;
         justify-content: center; align-items: center;
@@ -81,7 +80,7 @@
         transform: scale(1.05); box-shadow: 0 0 20px rgba(160, 64, 0, 0.3);
     }
 
-    /* 7. ФУТЕР */
+    /* ФУТЕР */
     .global-footer {
         padding: 120px 40px; background: #080808;
         border-top: 1px solid #1a1a1a; text-align: center;
@@ -101,16 +100,21 @@
     }
     .footer-bottom { margin-top: 80px; opacity: 0.3; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
 
+    /* АДАПТИВНОСТЬ ДЛЯ МОБИЛОК */
     @media (max-width: 768px) {
+        nav { padding: 15px 10px; }
         .nav-cta { display: none; }
-        .nav-links { gap: 20px; }
-        nav { padding: 20px; }
-        .footer-cta h2 { font-size: 1.8rem; letter-spacing: 5px; }
-        .toast-container { right: 20px; left: 20px; top: 20px; }
+        .nav-links { gap: 15px; width: 100%; justify-content: center; }
+        nav a { font-size: 0.6rem; letter-spacing: 2px; }
+        .toast-container { right: 10px; left: 10px; top: 15px; }
+        .toast-message { padding: 15px 20px; font-size: 0.65rem; text-align: center; }
+        .global-footer { padding: 60px 20px; }
+        .footer-cta h2 { font-size: 2rem; letter-spacing: 4px; margin-bottom: 30px; line-height: 1.2; }
+        .tg-button { padding: 18px 20px; font-size: 0.65rem; width: 100%; display: block; box-sizing: border-box; letter-spacing: 3px; }
+        .footer-bottom { margin-top: 50px; font-size: 0.5rem; }
     }
 </style>
     {% block extra_css %}{% endblock %}
-
     {% block extra_head %}{% endblock %}
 </head>
 <body>

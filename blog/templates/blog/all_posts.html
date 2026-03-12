@@ -4,17 +4,21 @@
 <style>
     /* ОПТИМИЗАЦИЯ: Вынесли всё из HTML в чистый CSS. Это разгружает процессор. */
     .archive-section { padding: 150px 40px 100px 40px; background: #0c0c0c; }
-    .archive-title { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; text-align: center; letter-spacing: 5px; margin-bottom: 80px; }
 
-    .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+    /* Адаптивный заголовок */
+    .archive-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); text-align: center; letter-spacing: 5px; margin-bottom: 80px; }
 
-    .archive-card { background: #121212; border: 1px solid #222; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); display: block; text-decoration: none; }
-    .archive-card:hover { border-color: #A04000; transform: translateY(-5px); }
+    /* Исправили 350px на 280px, чтобы карточки не ломали экран на узких телефонах */
+    .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+
+    /* Добавили flex, чтобы карточки тянулись одинаково */
+    .archive-card { background: #121212; border: 1px solid #222; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; text-decoration: none; height: 100%; }
+    .archive-card:hover { border-color: #A04000; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
     .archive-img { width: 100%; height: 250px; object-fit: cover; filter: brightness(0.7); transition: filter 0.4s ease; display: block; }
     .archive-card:hover .archive-img { filter: brightness(1); }
 
-    .archive-content { padding: 30px; }
+    .archive-content { padding: 30px; display: flex; flex-direction: column; flex-grow: 1; }
     .archive-category { color: #A04000; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 10px; }
     .archive-post-title { font-family: 'Cormorant Garamond'; font-size: 1.8rem; margin: 0 0 15px 0; color: white; line-height: 1.2; }
 
@@ -23,6 +27,16 @@
     .archive-card:hover .archive-comment-pill i { border-color: #A04000; color: #A04000; background: rgba(160, 64, 0, 0.05); }
 
     .archive-excerpt { color: #7F8C8D; font-size: 0.9rem; line-height: 1.6; margin: 0; }
+
+    /* АДАПТИВНОСТЬ ДЛЯ МОБИЛОК */
+    @media (max-width: 768px) {
+        .archive-section { padding: 100px 20px 60px 20px; }
+        .archive-title { margin-bottom: 40px; letter-spacing: 3px; }
+        .archive-grid { gap: 25px; }
+        .archive-content { padding: 25px 20px; }
+        .archive-img { height: 220px; }
+        .archive-post-title { font-size: 1.5rem; }
+    }
 </style>
 {% endblock %}
 

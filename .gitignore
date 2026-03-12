@@ -6,4 +6,3 @@ __pycache__/
 media/
 Thumbs.db
 .DS_Store
-.env

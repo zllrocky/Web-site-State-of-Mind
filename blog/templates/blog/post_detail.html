@@ -14,12 +14,11 @@
 
 {% block extra_css %}
 <style>
-    /* Твои стили без изменений */
-    .back-arrow, .hero-image img, .container, .submit-btn, .reply-btn {
+    .back-arrow, .hero-image img, .container, .submit-btn, .reply-btn, .card-link, .slide-img {
         transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    body { background-color: #080808; color: #FAF9F6; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+    body { background-color: #080808; color: #FAF9F6; font-family: 'Montserrat', sans-serif; width: 100%; }
 
     .back-arrow {
         position: fixed; top: 40px; left: 40px;
@@ -29,8 +28,12 @@
         font-size: 0.7rem; letter-spacing: 3px;
         z-index: 1000;
         text-transform: uppercase;
+        background: rgba(0,0,0,0.4);
+        padding: 10px 15px;
+        border-radius: 30px;
+        backdrop-filter: blur(5px);
     }
-    .back-arrow:hover { color: #FAF9F6 !important; transform: translateX(-10px); }
+    .back-arrow:hover { color: #FAF9F6 !important; transform: translateX(-10px); background: rgba(0,0,0,0.8); }
     .back-arrow span { font-size: 1.4rem; color: #7F8C8D; }
     .back-arrow:hover span { color: #A04000; }
 
@@ -41,14 +44,20 @@
         max-width: 900px; margin: -120px auto 0 auto;
         background: #121212; padding: 100px 80px;
         position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        border: 1px solid #1a1a1a; padding-bottom: 60px;
+        border: 1px solid #1a1a1a; padding-bottom: 20px; /* Убрал отступ внизу контейнера */
     }
 
-    h1 { font-family: 'Cormorant Garamond', serif; font-size: 4rem; line-height: 1.1; text-align: center; margin-bottom: 40px; letter-spacing: -1px; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.1; text-align: center; margin-bottom: 40px; letter-spacing: -1px; }
     .category-tag { display: block; text-align: center; text-transform: uppercase; letter-spacing: 5px; color: #A04000; font-size: 0.75rem; margin-bottom: 25px; }
-    .article-body { font-size: 1.2rem; line-height: 2; color: #BDC3C7; white-space: pre-line; margin-bottom: 80px; font-weight: 300; }
+    .article-body { font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 2; color: #BDC3C7; white-space: pre-line; margin-bottom: 80px; font-weight: 300; }
 
-    .comments-section { border-top: 1px solid #222; padding-top: 60px; padding-bottom: 50px; }
+    /* Убрал padding-bottom, чтобы чат сел ниже */
+    .comments-section { border-top: 1px solid #222; padding-top: 60px; padding-bottom: 0px; }
+
+    .comments-list-wrapper {
+        min-height: 200px;
+    }
+
     .comment-card { margin-bottom: 40px; }
     .author-name { font-weight: 600; font-size: 0.8rem; color: #FAF9F6; text-transform: uppercase; letter-spacing: 2px; }
     .comment-text { color: #888; line-height: 1.7; margin: 15px 0; font-size: 1rem; }
@@ -58,7 +67,8 @@
         background: rgba(18, 18, 18, 0.98);
         backdrop-filter: blur(15px);
         padding: 30px 40px; border-top: 1px solid #222;
-        margin-top: 80px; z-index: 100;
+        margin-top: 50px;
+        z-index: 100;
         margin-left: -80px; margin-right: -80px;
     }
 
@@ -66,6 +76,7 @@
         width: 100%; background: #080808; border: 1px solid #222;
         color: white; padding: 15px; margin-bottom: 15px;
         font-family: inherit; font-size: 0.9rem;
+        box-sizing: border-box;
     }
     .submit-btn {
         background: #A04000; color: white; border: none; padding: 18px;
@@ -73,10 +84,43 @@
         width: 100%; font-weight: bold; font-size: 0.8rem;
     }
 
+    /* СТИЛИ КАРУСЕЛИ */
+    .carousel-container { padding: 80px 0; background: #080808; position: relative; border-top: 1px solid #1a1a1a;}
+    .section-title { text-align: center; font-family: 'Cormorant Garamond'; font-size: 2.2rem; letter-spacing: 6px; margin-bottom: 50px; color: #FAF9F6; text-transform: uppercase; }
+    .swiper { padding-bottom: 80px !important; padding-left: 20px; opacity: 0; }
+    .swiper-initialized { opacity: 1; }
+    .swiper-slide { width: 380px; height: auto; }
+    .card-link { display: flex; flex-direction: column; height: 100%; background: #121212; border: 1px solid #222; text-decoration: none; }
+    .card-link:hover { border-color: #A04000; transform: translateY(-10px); }
+    .slide-img { width: 100%; height: 280px; object-fit: cover; filter: brightness(0.6); }
+    .card-link:hover .slide-img { filter: brightness(1); }
+    .slide-text { padding: 30px; flex-grow: 1; }
+    .category { color: #A04000; font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 15px; display: block; }
+    .slide-text h3 { font-family: 'Cormorant Garamond'; font-size: 1.7rem; margin: 0 0 15px 0; color: white; line-height: 1.3; }
+    .swiper-button-next { top: auto !important; bottom: 10px !important; left: 50% !important; right: auto !important; transform: translateX(-50%); color: #A04000 !important; width: 120px !important; }
+    .swiper-button-next::after { content: '→' !important; font-family: 'Montserrat', sans-serif !important; font-size: 3rem !important; }
+    .all-posts-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; background: transparent !important; border: none !important; }
+    .arrow-circle { width: 65px; height: 65px; border: 1px solid #A04000; border-radius: 50%; line-height: 62px; text-align: center; font-size: 1.4rem; color: #A04000; margin-bottom: 20px; }
+
+    /* АДАПТИВНОСТЬ */
     @media (max-width: 992px) {
-        .container { margin-top: -60px; padding: 60px 40px; }
+        .container { margin-top: -60px; padding: 60px 40px 40px 40px; }
         .hero-image { height: 50vh; }
-        .comment-form { position: static; margin-top: 50px; margin-left: -40px; margin-right: -40px; padding: 30px; backdrop-filter: none; }
+        .comments-list-wrapper { min-height: 100px; }
+        .comment-form { position: static; margin-top: 30px; margin-left: 0; margin-right: 0; padding: 30px 0 0 0; backdrop-filter: none; background: transparent; border-top: 1px solid #222; }
+        .back-arrow { top: 20px; left: 20px; font-size: 0.6rem; padding: 8px 12px; }
+        .swiper-slide { width: 290px; }
+        .slide-img { height: 220px; }
+    }
+
+    @media (max-width: 480px) {
+        .container { padding: 40px 20px 20px 20px; margin-top: -30px; border-radius: 15px 15px 0 0; }
+        .hero-image { height: 40vh; }
+        .article-body { margin-bottom: 50px; }
+        .section-title { font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 30px; }
+        .slide-text { padding: 20px; }
+        .slide-text h3 { font-size: 1.4rem; }
+        .swiper-button-next { display: none; }
     }
 </style>
 {% endblock %}
@@ -98,33 +142,35 @@
     <div class="article-body">{{ post.content }}</div>
 
     <div class="comments-section" id="comments">
-        <h3 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin-bottom: 40px; font-size: 1.5rem;">
-            ОТКЛИКИ ({{ post.comments.count }})
+        <h3 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin-bottom: 40px; font-size: clamp(1.2rem, 3vw, 1.5rem); text-align: center;">
+            ОТКЛИКИ (<span style="font-family: 'Montserrat', sans-serif; font-weight: 600;">{{ post.comments.count }}</span>)
         </h3>
 
-        {% for comment in comments %}
-            {% if not comment.parent %}
-            <div class="comment-card">
-                <span class="author-name">{{ comment.author_name }}</span>
-                <div class="comment-text">{{ comment.text }}</div>
-                <button class="reply-btn"
-                        style="background:none; border:none; color:#A04000; cursor:pointer; font-size:0.7rem; letter-spacing:1px; text-transform:uppercase;"
-                        onclick="setParent('{{ comment.id }}', '{{ comment.author_name }}')">Ответить</button>
+        <div class="comments-list-wrapper">
+            {% for comment in comments %}
+                {% if not comment.parent %}
+                <div class="comment-card">
+                    <span class="author-name">{{ comment.author_name }}</span>
+                    <div class="comment-text">{{ comment.text }}</div>
+                    <button class="reply-btn"
+                            style="background:none; border:none; color:#A04000; cursor:pointer; font-size:0.7rem; letter-spacing:1px; text-transform:uppercase; padding:0;"
+                            onclick="setParent('{{ comment.id }}', '{{ comment.author_name }}')">Ответить</button>
 
-                {% for reply in comment.replies.all %}
-                    {% if reply.is_approved %}
-                    <div style="margin-left: 30px; border-left: 1px solid #222; padding-left: 30px; margin-top: 20px;">
-                        <span class="author-name" style="font-size: 0.7rem;">{{ reply.author_name }}</span>
-                        <div class="comment-text" style="font-size: 0.95rem;">{{ reply.text }}</div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            {% endif %}
-        {% endfor %}
+                    {% for reply in comment.replies.all %}
+                        {% if reply.is_approved %}
+                        <div style="margin-left: 20px; border-left: 1px solid #222; padding-left: 20px; margin-top: 20px;">
+                            <span class="author-name" style="font-size: 0.7rem;">{{ reply.author_name }}</span>
+                            <div class="comment-text" style="font-size: 0.95rem;">{{ reply.text }}</div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
 
         <div class="comment-form" id="comment-form-anchor">
-            <h4 id="form-title" style="font-family: 'Cormorant Garamond'; text-align: center; color: #A04000; letter-spacing: 4px; margin-bottom: 20px;">ОСТАВИТЬ ОТКЛИК</h4>
+            <h4 id="form-title" style="font-family: 'Cormorant Garamond'; text-align: center; color: #A04000; letter-spacing: 4px; margin-bottom: 20px; font-size: 1.2rem;">ОСТАВИТЬ ОТКЛИК</h4>
             <a href="javascript:void(0)" id="cancel-reply" onclick="cancelReply()" style="display:none; color: #566573; font-size: 0.6rem; text-decoration: none; margin-bottom: 15px; text-align: center; display: block; letter-spacing: 2px;">ОТМЕНИТЬ ОТВЕТ</a>
             <form method="POST">
                 {% csrf_token %}
@@ -136,18 +182,53 @@
         </div>
     </div>
 
-    <div class="divider" style="width: 80px; height: 1px; background: #333; margin: 80px auto;"></div>
-    <footer style="text-align: center; font-size: 0.7rem; color: #444; letter-spacing: 3px; padding-bottom: 40px;">
+    <div class="divider" style="width: 80px; height: 1px; background: #333; margin: 30px auto 40px auto;"></div>
+    <footer style="text-align: center; font-size: 0.7rem; color: #444; letter-spacing: 3px;">
         ОПУБЛИКОВАНО: {{ post.created_at|date:"d E Y" }}
     </footer>
 </div>
+
+{% if posts %}
+<section class="carousel-container">
+    <h2 class="section-title">ДРУГИЕ МЫСЛИ</h2>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            {% for p in posts %}
+            <div class="swiper-slide">
+                <a href="{% url 'post_detail' p.pk %}" class="card-link">
+                    {% if p.image %}
+                    <img src="{{ p.image.url }}" class="slide-img" loading="lazy" width="400" height="280" alt="{{ p.title }}">
+                    {% endif %}
+                    <div class="slide-text">
+                        <span class="category">{{ p.get_category_display }}</span>
+                        <h3>{{ p.title }}</h3>
+
+                        <div class="comment-pill">
+                            <i>{{ p.approved_comments_count }}</i> ОТКЛИКОВ
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+            <div class="swiper-slide all-posts-slide">
+                <a href="{% url 'all_posts' %}" style="text-align: center; text-decoration: none; display: block;">
+                    <div class="arrow-circle">→</div>
+                    <p style="letter-spacing: 4px; font-size: 0.65rem; color: #7F8C8D; text-transform: uppercase;">Весь архив</p>
+                </a>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
 <script>
     function setParent(id, name) {
         document.getElementById('parent_id_input').value = id;
-        document.getElementById('comment-form-anchor').scrollIntoView({behavior: 'smooth'});
+        document.getElementById('comment-form-anchor').scrollIntoView({behavior: 'smooth', block: 'center'});
         document.getElementById('form-title').innerText = 'ОТВЕТИТЬ ' + name.toUpperCase();
         document.getElementById('cancel-reply').style.display = 'block';
     }
@@ -155,6 +236,26 @@
         document.getElementById('parent_id_input').value = '';
         document.getElementById('form-title').innerText = 'ОСТАВИТЬ ОТКЛИК';
         document.getElementById('cancel-reply').style.display = 'none';
+    }
+
+    // Инициализация карусели
+    if (document.querySelector('.mySwiper')) {
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: "auto",
+            centeredSlides: false,
+            spaceBetween: 20,
+            grabCursor: true,
+            observer: true,
+            observeParents: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+            },
+            breakpoints: {
+                992: {
+                    spaceBetween: 40
+                }
+            }
+        });
     }
 </script>
 {% endblock %}
