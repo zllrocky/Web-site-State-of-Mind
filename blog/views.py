@@ -75,8 +75,8 @@ def all_posts(request):
         approved_comments_count=Count('comments', filter=Q(comments__is_approved=True))
     ).order_by('-created_at')
 
-    # Включаем Paginator: 6 постов на одну страницу
-    paginator = Paginator(post_list, 6)
+    # Включаем Paginator: 4 постов на одну страницу
+    paginator = Paginator(post_list, 4)
 
     # Получаем номер текущей страницы из URL (например, ?page=2)
     page_number = request.GET.get('page')
