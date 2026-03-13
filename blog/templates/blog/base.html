@@ -22,7 +22,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
     <style>
@@ -184,7 +185,18 @@
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
-        .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
+        /* УМНЫЙ ЗАГОЛОВОК ФУТЕРА: Никогда не вылезает за края */
+        .footer-cta h2 {
+            font-family: 'Cormorant Garamond', serif;
+            /* Минимум 1.5rem, максимум 3rem, подстраивается под ширину (4vw) */
+            font-size: clamp(1.5rem, 4.5vw, 3rem);
+            letter-spacing: clamp(4px, 1vw, 8px);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            width: 100%;
+            padding: 0 10px; /* Защитный отступ по бокам */
+            line-height: 1.2;
+        }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
         .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
     </style>
