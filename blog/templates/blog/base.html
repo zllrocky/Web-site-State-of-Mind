@@ -29,11 +29,19 @@
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            /* ВЕРНУЛ: твоя оригинальная центровка */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Анимация появления только для контента, чтобы не убивать FCP в Lighthouse */
         main {
             animation: fadeInContent 0.5s ease-in forwards;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
         @keyframes fadeInContent {
             from { opacity: 0; transform: translateY(10px); }
@@ -122,15 +130,15 @@
         @media (orientation: landscape) and (max-height: 500px) {
             nav { position: absolute; }
             img {
-                max-height: 85vh !important;
-                width: auto !important;
-                object-fit: contain !important;
-                margin: 0 auto !important;
+                max-height: 85vh !important; /* Уменьшаем высоту */
+                width: auto !important; /* Отменяем растягивание в ширину */
+                object-fit: contain !important; /* Вписываем целиком */
+                margin: 0 auto !important; /* Центрируем */
             }
         }
 
         /* ФУТЕР */
-        .global-footer { padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
+        .global-footer { padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; width: 100%; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
         .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
@@ -139,7 +147,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body style="background-color: #080808 !important; color: #ffffff !important;">
+<body>
 
 <nav>
     <div></div>
