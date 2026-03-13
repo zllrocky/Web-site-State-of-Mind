@@ -115,7 +115,7 @@
             transition: all 0.3s ease;
         }
 
-        /* СТРЕЛКА НАЗАД (Синхронизация с post_detail) */
+        /* СТРЕЛКА НАЗАД */
         .back-link, .back-arrow {
             display: inline-flex !important;
             align-items: center;
@@ -152,7 +152,6 @@
             width: 100% !important;
         }
 
-        /* ПЛАНШЕТЫ И ТЕЛЕФОНЫ */
         @media (max-width: 1100px) {
             nav { padding: 0 15px; height: 70px; background: rgba(8,8,8,0.98); justify-content: center; }
             .nav-cta-wrapper { display: none; }
@@ -162,26 +161,24 @@
             .back-link, .back-arrow { margin-left: 20px !important; margin-top: 100px !important; }
         }
 
-        /* --- СИНХРОНИЗИРОВАННЫЙ АЛЬБОМНЫЙ РЕЖИМ --- */
+        /* --- СИНХРОНИЗИРОВАННЫЙ АЛЬБОМНЫЙ РЕЖИМ (ФОТО НА ВСЮ ШИРИНУ) --- */
         @media (orientation: landscape) and (max-height: 600px) {
-            nav { position: absolute; }
+            nav { position: absolute; height: 70px; }
 
-            /* Применяем правила ко всем картинкам, включая Hero в постах */
             img, main img, .hero-image img, .post-content img {
-                width: auto !important;
+                width: 100% !important;
                 max-width: 100% !important;
-                height: auto !important;
-                max-height: 70vh !important; /* Даем место для заголовка снизу */
-                object-fit: contain !important;
-                margin: 15px auto !important;
+                height: 60vh !important;
+                object-fit: cover !important;
+                margin: 0 auto !important;
                 background-color: transparent !important;
             }
 
-            main { padding-top: 70px !important; }
-            .back-link, .back-arrow { margin-top: 80px !important; }
+            main { padding-top: 50px !important; }
+            .back-link, .back-arrow { margin-top: 60px !important; }
 
             h1, .about-title, .post-title { font-size: 1.8rem !important; }
-            .container { margin-top: 20px !important; }
+            .container { margin-top: 0 !important; }
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
