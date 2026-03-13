@@ -29,26 +29,23 @@
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            /* ВЕРНУЛ: твоя оригинальная центровка */
-            width: 100%;
+            /* ЦЕНТРОВКА САЙТА */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Анимация появления только для контента, чтобы не убивать FCP в Lighthouse */
+        /* Анимация появления */
         main {
             animation: fadeInContent 0.5s ease-in forwards;
             width: 100%;
-            display: flex;
-            justify-content: center;
         }
         @keyframes fadeInContent {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Картинки */
+        /* КАРТИНКИ (Базовый вид) */
         img {
             width: 100%;
             max-width: 100%;
@@ -89,28 +86,21 @@
             }
         }
 
-        /* Оранжевый текст */
-        .brand-subtitle {
-            color: #A04000; text-align: center; text-transform: uppercase;
-            letter-spacing: 4px; font-size: 0.8rem; margin: 30px auto 15px auto;
-            display: block; width: 100%;
+        /* ОРАНЖЕВЫЙ ТЕКСТ (Центровка) */
+        .brand-subtitle, .about-subtitle {
+            color: #A04000 !important;
+            text-align: center !important;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin: 30px auto 15px auto !important;
+            display: block !important;
+            width: 100% !important;
         }
 
         .back-link { display: inline-block; margin: 100px 0 20px 20px; color: white; text-decoration: none; opacity: 0.6; }
 
-        /* ПЛАНШЕТЫ */
-        @media (max-width: 1024px) {
-            nav { padding: 0 15px; }
-            .nav-links { gap: 15px; }
-            nav a { font-size: 0.6rem; letter-spacing: 1px; }
-            .cta-button { padding: 8px 12px; font-size: 0.5rem; }
-        }
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .about-container { flex-direction: column; text-align: center; padding-top: 80px; }
-            .about-image img { max-width: 80%; width: auto; }
-        }
-
-        /* ТЕЛЕФОНЫ */
+        /* ТЕЛЕФОНЫ (Портрет) */
         @media (max-width: 768px) {
             nav { grid-template-columns: 1fr; height: 70px; background: rgba(8,8,8,0.98); }
             .nav-cta-wrapper { display: none; }
@@ -123,22 +113,22 @@
                 box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #d35400; text-transform: uppercase;
                 transition: opacity 0.4s ease, transform 0.4s ease;
             }
-            .tg-button { width: 100%; padding: 18px 20px; box-sizing: border-box; display: block; }
         }
 
-        /* ПЕРЕВЕРНУТЫЙ ТЕЛЕФОН (ИСПРАВЛЕНО: фото теперь вписывается и не обрезается) */
+        /* ПЕРЕВЕРНУТЫЙ ТЕЛЕФОН (ИСПРАВЛЕННЫЙ ФИКС) */
         @media (orientation: landscape) and (max-height: 500px) {
             nav { position: absolute; }
             img {
-                max-height: 85vh !important; /* Уменьшаем высоту */
-                width: auto !important; /* Отменяем растягивание в ширину */
-                object-fit: contain !important; /* Вписываем целиком */
-                margin: 0 auto !important; /* Центрируем */
+                width: auto !important;
+                max-width: 100% !important;
+                max-height: 80vh !important; /* Не выше экрана */
+                object-fit: contain !important; /* НЕ ОБРЕЗАТЬ */
+                margin: 0 auto !important;
             }
         }
 
         /* ФУТЕР */
-        .global-footer { padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; width: 100%; }
+        .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
         .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
