@@ -53,7 +53,7 @@
             margin: 0 auto;
         }
 
-        /* НАВИГАЦИЯ — ПЕРЕРАБОТАНО */
+        /* НАВИГАЦИЯ */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 90px;
             display: flex;
@@ -69,7 +69,6 @@
         .nav-links {
             display: flex;
             gap: 40px;
-            /* Центровка для десктопа */
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -96,7 +95,6 @@
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* КНОПКА ЗАПИСЬ (FAB) */
         .mobile-fab {
             display: none;
             position: fixed;
@@ -117,7 +115,6 @@
             transition: all 0.3s ease;
         }
 
-        /* СТРЕЛКА НАЗАД */
         .back-link {
             display: inline-flex !important;
             align-items: center;
@@ -142,7 +139,6 @@
             .back-link:hover { opacity: 1; transform: translateX(-5px); }
         }
 
-        /* ОРАНЖЕВЫЙ ТЕКСТ */
         .brand-subtitle, .about-subtitle {
             color: #A04000 !important;
             text-align: center !important;
@@ -154,7 +150,6 @@
             width: 100% !important;
         }
 
-        /* --- ПРАВКА ДЛЯ ПЛАНШЕТОВ И ТЕЛЕФОНОВ (Breakpoint 1100px) --- */
         @media (max-width: 1100px) {
             nav {
                 padding: 0 15px;
@@ -171,30 +166,39 @@
                 width: 100%;
                 justify-content: center;
             }
-            nav a {
-                font-size: 0.65rem;
-                letter-spacing: 1px;
-            }
+            nav a { font-size: 0.65rem; letter-spacing: 1px; }
             .mobile-fab { display: block; }
             .back-link { margin-left: 20px !important; }
         }
 
-        @media (orientation: landscape) and (max-height: 550px) {
+        /* --- ФИНАЛЬНЫЙ ФИКС ДЛЯ АЛЬБОМНОГО РЕЖИМА --- */
+        @media (orientation: landscape) and (max-height: 600px) {
             nav { position: absolute; }
-            img { width: auto !important; max-width: 95% !important; max-height: 80vh !important; object-fit: contain !important; margin: 20px auto !important; }
+
+            img {
+                width: auto !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: 75vh !important; /* Фото занимает 3/4 высоты экрана */
+                object-fit: contain !important; /* Показываем фото полностью */
+                margin: 20px auto !important;
+            }
+
+            main { padding-top: 80px !important; }
+            .back-link { margin-top: 100px !important; }
+
+            h1, .about-title { font-size: 2rem !important; }
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
-        /* УМНЫЙ ЗАГОЛОВОК ФУТЕРА: Никогда не вылезает за края */
         .footer-cta h2 {
             font-family: 'Cormorant Garamond', serif;
-            /* Минимум 1.5rem, максимум 3rem, подстраивается под ширину (4vw) */
             font-size: clamp(1.5rem, 4.5vw, 3rem);
             letter-spacing: clamp(4px, 1vw, 8px);
             margin-bottom: 40px;
             text-transform: uppercase;
             width: 100%;
-            padding: 0 10px; /* Защитный отступ по бокам */
+            padding: 0 10px;
             line-height: 1.2;
         }
         .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
