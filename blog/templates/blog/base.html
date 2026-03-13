@@ -21,31 +21,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
     <style>
         * { box-sizing: border-box; }
+
         body {
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            /* ЦЕНТРОВКА САЙТА */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* Анимация появления */
         main {
-            animation: fadeInContent 0.5s ease-in forwards;
             width: 100%;
+            animation: fadeInContent 0.5s ease-in forwards;
         }
+
         @keyframes fadeInContent {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* КАРТИНКИ (Базовый вид) */
         img {
             width: 100%;
             max-width: 100%;
@@ -58,35 +55,109 @@
         /* НАВИГАЦИЯ */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 90px;
-            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 0 40px; z-index: 1000;
             background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+            pointer-events: none;
         }
-        .nav-links { display: flex; gap: 40px; justify-self: center; }
+
+        .nav-links, .nav-cta-wrapper { pointer-events: auto; }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+        }
+
+        /* ССЫЛКИ МЕНЮ: АНИМАЦИЯ */
         nav a {
             letter-spacing: 3px; font-size: 0.7rem; color: white !important;
-            opacity: 0.8; text-decoration: none; text-transform: uppercase;
-            transition: opacity 0.3s ease, color 0.3s ease;
+            opacity: 0.7; text-decoration: none; text-transform: uppercase;
+            transition: all 0.3s ease; /* Плавность для цвета и прозрачности */
         }
-        .nav-cta-wrapper { justify-self: end; }
+
+        .nav-cta-wrapper { margin-left: auto; }
+
+        /* КНОПКИ: БАЗОВЫЙ СТИЛЬ И ПЛАВНОСТЬ */
+        .cta-button, .tg-button, .mobile-fab {
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
 
         .cta-button {
             display: inline-block; padding: 12px 25px; border: 1px solid #A04000;
             color: #A04000 !important; font-size: 0.65rem;
             letter-spacing: 2px; font-weight: 600; text-transform: uppercase;
             background: transparent; text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        @media (hover: hover) and (pointer: fine) {
-            nav a:hover { opacity: 1; color: #A04000 !important; }
+        /* КНОПКА ЗАПИСЬ (FAB) — МОБИЛКИ */
+        .mobile-fab {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 9999;
+            background: #A04000;
+            color: white !important;
+            padding: 16px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid #d35400;
+            text-transform: uppercase;
+            transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+        }
+
+        /* СТРЕЛКА НАЗАД */
+        .back-link {
+            display: inline-flex !important;
+            align-items: center;
+            position: relative !important;
+            z-index: 2000 !important;
+            margin: 120px 0 20px 40px !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            opacity: 0.8;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* --- ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (ТОЛЬКО ДЛЯ КОМПА) --- */
+        @media (hover: hover) {
+            nav a:hover {
+                opacity: 1;
+                color: #A04000 !important;
+            }
+
             .cta-button:hover, .tg-button:hover {
-                background: #A04000; color: white !important;
-                transform: scale(1.03); box-shadow: 0 0 20px rgba(160, 64, 0, 0.3);
+                background: #A04000 !important;
+                color: white !important;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(160, 64, 0, 0.4);
+            }
+
+            .back-link:hover {
+                opacity: 1;
+                transform: translateX(-5px);
+            }
+
+            .mobile-fab:hover {
+                background: #d35400 !important;
+                transform: scale(1.05);
             }
         }
 
-        /* ОРАНЖЕВЫЙ ТЕКСТ (Центровка) */
+        /* ОРАНЖЕВЫЙ ТЕКСТ */
         .brand-subtitle, .about-subtitle {
             color: #A04000 !important;
             text-align: center !important;
@@ -98,39 +169,27 @@
             width: 100% !important;
         }
 
-        .back-link { display: inline-block; margin: 100px 0 20px 20px; color: white; text-decoration: none; opacity: 0.6; }
-
-        /* ТЕЛЕФОНЫ (Портрет) */
         @media (max-width: 768px) {
-            nav { grid-template-columns: 1fr; height: 70px; background: rgba(8,8,8,0.98); }
+            nav { padding: 0 15px; height: 70px; background: rgba(8,8,8,0.98); justify-content: center; }
             .nav-cta-wrapper { display: none; }
-            .nav-links { gap: 15px; justify-self: center; width: 100%; justify-content: center; }
-
-            .mobile-fab {
-                display: block; position: fixed; bottom: 30px; right: 20px; z-index: 9999;
-                background: #A04000; color: white; padding: 16px 24px; border-radius: 30px;
-                text-decoration: none; font-size: 0.65rem; letter-spacing: 3px; font-weight: 600;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #d35400; text-transform: uppercase;
-                transition: opacity 0.4s ease, transform 0.4s ease;
-            }
+            .nav-links { position: static; transform: none; gap: 15px; }
+            .mobile-fab { display: block; }
         }
 
-        /* ПЕРЕВЕРНУТЫЙ ТЕЛЕФОН (ИСПРАВЛЕННЫЙ ФИКС) */
-        @media (orientation: landscape) and (max-height: 500px) {
+        @media (orientation: landscape) and (max-height: 550px) {
             nav { position: absolute; }
             img {
                 width: auto !important;
-                max-width: 100% !important;
-                max-height: 80vh !important; /* Не выше экрана */
-                object-fit: contain !important; /* НЕ ОБРЕЗАТЬ */
-                margin: 0 auto !important;
+                max-width: 95% !important;
+                max-height: 80vh !important;
+                object-fit: contain !important;
+                margin: 20px auto !important;
             }
         }
 
-        /* ФУТЕР */
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
-        .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
+        .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; }
         .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 
@@ -140,7 +199,7 @@
 <body>
 
 <nav>
-    <div></div>
+    <div style="width: 150px;"></div>
     <div class="nav-links">
         <a href="{% url 'index' %}">ГЛАВНАЯ</a>
         <a href="{% url 'all_posts' %}">МЫСЛИ</a>
@@ -160,9 +219,7 @@
         <h2>ГОТОВЫ К ТРАНСФОРМАЦИИ?</h2>
         <a href="https://t.me/stateofmind_assistant_bot" class="tg-button">НАПИСАТЬ В TELEGRAM</a>
     </div>
-    <div class="footer-bottom">
-        © 2026 STATE OF MIND — EDITORIAL & COACHING
-    </div>
+    <div class="footer-bottom">© 2026 STATE OF MIND — EDITORIAL & COACHING</div>
 </footer>
 
 <a href="#contact" class="mobile-fab" id="mobileFab">ЗАПИСЬ</a>
@@ -175,11 +232,9 @@
             const footerTop = footer.getBoundingClientRect().top;
             if (footerTop < window.innerHeight) {
                 fab.style.opacity = '0';
-                fab.style.transform = 'translateY(20px) scale(0.9)';
                 fab.style.pointerEvents = 'none';
             } else {
                 fab.style.opacity = '1';
-                fab.style.transform = 'translateY(0) scale(1)';
                 fab.style.pointerEvents = 'auto';
             }
         }
