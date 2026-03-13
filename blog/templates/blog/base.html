@@ -171,23 +171,24 @@
             .back-link { margin-left: 20px !important; }
         }
 
-        /* --- ФИНАЛЬНЫЙ ФИКС ДЛЯ АЛЬБОМНОГО РЕЖИМА --- */
+        /* --- УЛУЧШЕННЫЙ АЛЬБОМНЫЙ РЕЖИМ ДЛЯ ВСЕХ СТРАНИЦ --- */
         @media (orientation: landscape) and (max-height: 600px) {
             nav { position: absolute; }
 
-            img {
+            /* Принудительно вписываем ВСЕ картинки (включая те, что в постах) */
+            img, main img, .post-content img {
                 width: auto !important;
                 max-width: 100% !important;
                 height: auto !important;
-                max-height: 75vh !important; /* Фото занимает 3/4 высоты экрана */
-                object-fit: contain !important; /* Показываем фото полностью */
-                margin: 20px auto !important;
+                max-height: 70vh !important; /* Даем место для заголовка снизу */
+                object-fit: contain !important;
+                margin: 15px auto !important;
             }
 
-            main { padding-top: 80px !important; }
-            .back-link { margin-top: 100px !important; }
+            main { padding-top: 70px !important; }
+            .back-link { margin-top: 80px !important; }
 
-            h1, .about-title { font-size: 2rem !important; }
+            h1, .about-title, .post-title { font-size: 1.8rem !important; }
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
