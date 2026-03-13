@@ -115,18 +115,20 @@
             transition: all 0.3s ease;
         }
 
-        .back-link {
+        /* СТРЕЛКА НАЗАД (Синхронизация с post_detail) */
+        .back-link, .back-arrow {
             display: inline-flex !important;
             align-items: center;
             position: relative !important;
             z-index: 2000 !important;
-            margin: 120px 0 20px 40px !important;
+            margin: 110px 0 20px 40px !important;
             color: #ffffff !important;
             text-decoration: none !important;
             opacity: 0.8;
             font-size: 0.8rem;
             letter-spacing: 2px;
             pointer-events: auto !important;
+            cursor: pointer !important;
             transition: all 0.3s ease;
         }
 
@@ -136,7 +138,7 @@
                 background: #A04000 !important; color: white !important;
                 transform: translateY(-2px); box-shadow: 0 5px 15px rgba(160, 64, 0, 0.4);
             }
-            .back-link:hover { opacity: 1; transform: translateX(-5px); }
+            .back-link:hover, .back-arrow:hover { opacity: 1; transform: translateX(-5px); }
         }
 
         .brand-subtitle, .about-subtitle {
@@ -150,45 +152,36 @@
             width: 100% !important;
         }
 
+        /* ПЛАНШЕТЫ И ТЕЛЕФОНЫ */
         @media (max-width: 1100px) {
-            nav {
-                padding: 0 15px;
-                height: 70px;
-                background: rgba(8,8,8,0.98);
-                justify-content: center;
-            }
+            nav { padding: 0 15px; height: 70px; background: rgba(8,8,8,0.98); justify-content: center; }
             .nav-cta-wrapper { display: none; }
-            .nav-links {
-                position: relative;
-                left: auto;
-                transform: none;
-                gap: 20px;
-                width: 100%;
-                justify-content: center;
-            }
+            .nav-links { position: relative; left: auto; transform: none; gap: 20px; width: 100%; justify-content: center; }
             nav a { font-size: 0.65rem; letter-spacing: 1px; }
             .mobile-fab { display: block; }
-            .back-link { margin-left: 20px !important; }
+            .back-link, .back-arrow { margin-left: 20px !important; margin-top: 100px !important; }
         }
 
-        /* --- УЛУЧШЕННЫЙ АЛЬБОМНЫЙ РЕЖИМ ДЛЯ ВСЕХ СТРАНИЦ --- */
+        /* --- СИНХРОНИЗИРОВАННЫЙ АЛЬБОМНЫЙ РЕЖИМ --- */
         @media (orientation: landscape) and (max-height: 600px) {
             nav { position: absolute; }
 
-            /* Принудительно вписываем ВСЕ картинки (включая те, что в постах) */
-            img, main img, .post-content img {
+            /* Применяем правила ко всем картинкам, включая Hero в постах */
+            img, main img, .hero-image img, .post-content img {
                 width: auto !important;
                 max-width: 100% !important;
                 height: auto !important;
                 max-height: 70vh !important; /* Даем место для заголовка снизу */
                 object-fit: contain !important;
                 margin: 15px auto !important;
+                background-color: transparent !important;
             }
 
             main { padding-top: 70px !important; }
-            .back-link { margin-top: 80px !important; }
+            .back-link, .back-arrow { margin-top: 80px !important; }
 
             h1, .about-title, .post-title { font-size: 1.8rem !important; }
+            .container { margin-top: 20px !important; }
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
