@@ -12,6 +12,9 @@
             color: #ffffff !important;
             margin: 0;
             padding: 0;
+            /* Убираем любой возможный горизонтальный скролл */
+            max-width: 100%;
+            overflow-x: hidden;
         }
     </style>
 
@@ -21,7 +24,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
     <style>
@@ -30,7 +32,6 @@
         body {
             font-family: 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
         main {
@@ -56,7 +57,7 @@
         nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 90px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Центруем по умолчанию */
             align-items: center;
             padding: 0 40px; z-index: 1000;
             background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
@@ -66,25 +67,25 @@
         .nav-links, .nav-cta-wrapper { pointer-events: auto; }
 
         .nav-links {
+            display: flex;
+            gap: 40px;
+            /* На десктопе держим по центру через абсолют, если кнопка справа */
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 40px;
         }
 
-        /* ССЫЛКИ МЕНЮ: АНИМАЦИЯ */
         nav a {
             letter-spacing: 3px; font-size: 0.7rem; color: white !important;
             opacity: 0.7; text-decoration: none; text-transform: uppercase;
-            transition: all 0.3s ease; /* Плавность для цвета и прозрачности */
+            transition: all 0.3s ease;
+            white-space: nowrap; /* Чтобы текст не переносился */
         }
 
-        .nav-cta-wrapper { margin-left: auto; }
-
-        /* КНОПКИ: БАЗОВЫЙ СТИЛЬ И ПЛАВНОСТЬ */
-        .cta-button, .tg-button, .mobile-fab {
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        .nav-cta-wrapper {
+            margin-left: auto;
+            position: relative;
+            z-index: 1001;
         }
 
         .cta-button {
@@ -92,9 +93,10 @@
             color: #A04000 !important; font-size: 0.65rem;
             letter-spacing: 2px; font-weight: 600; text-transform: uppercase;
             background: transparent; text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* КНОПКА ЗАПИСЬ (FAB) — МОБИЛКИ */
+        /* КНОПКА ЗАПИСЬ (FAB) */
         .mobile-fab {
             display: none;
             position: fixed;
@@ -112,7 +114,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             border: 1px solid #d35400;
             text-transform: uppercase;
-            transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         /* СТРЕЛКА НАЗАД */
@@ -128,33 +130,16 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             pointer-events: auto !important;
-            cursor: pointer !important;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        /* --- ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (ТОЛЬКО ДЛЯ КОМПА) --- */
         @media (hover: hover) {
-            nav a:hover {
-                opacity: 1;
-                color: #A04000 !important;
-            }
-
+            nav a:hover { opacity: 1; color: #A04000 !important; }
             .cta-button:hover, .tg-button:hover {
-                background: #A04000 !important;
-                color: white !important;
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(160, 64, 0, 0.4);
+                background: #A04000 !important; color: white !important;
+                transform: translateY(-2px); box-shadow: 0 5px 15px rgba(160, 64, 0, 0.4);
             }
-
-            .back-link:hover {
-                opacity: 1;
-                transform: translateX(-5px);
-            }
-
-            .mobile-fab:hover {
-                background: #d35400 !important;
-                transform: scale(1.05);
-            }
+            .back-link:hover { opacity: 1; transform: translateX(-5px); }
         }
 
         /* ОРАНЖЕВЫЙ ТЕКСТ */
@@ -169,27 +154,39 @@
             width: 100% !important;
         }
 
+        /* --- МОБИЛЬНЫЙ ФИКС --- */
         @media (max-width: 768px) {
-            nav { padding: 0 15px; height: 70px; background: rgba(8,8,8,0.98); justify-content: center; }
+            nav {
+                padding: 0 10px;
+                height: 70px;
+                background: rgba(8,8,8,0.98);
+                justify-content: center;
+            }
             .nav-cta-wrapper { display: none; }
-            .nav-links { position: static; transform: none; gap: 15px; }
+            .nav-links {
+                position: relative;
+                left: auto;
+                transform: none;
+                gap: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            nav a {
+                font-size: 0.6rem; /* Чуть меньше, чтобы влезло */
+                letter-spacing: 1px;
+            }
             .mobile-fab { display: block; }
+            .back-link { margin-left: 20px !important; }
         }
 
         @media (orientation: landscape) and (max-height: 550px) {
             nav { position: absolute; }
-            img {
-                width: auto !important;
-                max-width: 95% !important;
-                max-height: 80vh !important;
-                object-fit: contain !important;
-                margin: 20px auto !important;
-            }
+            img { width: auto !important; max-width: 95% !important; max-height: 80vh !important; object-fit: contain !important; margin: 20px auto !important; }
         }
 
         .global-footer { width: 100%; padding: 120px 20px 80px 20px; border-top: 1px solid #1a1a1a; text-align: center; }
         .footer-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 8px; margin-bottom: 40px; text-transform: uppercase; }
-        .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; }
+        .tg-button { display: inline-block; padding: 20px 50px; border: 1px solid #A04000; color: #A04000 !important; text-decoration: none; font-size: 0.75rem; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; }
         .footer-bottom { margin-top: 80px; opacity: 0.6; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 
@@ -199,7 +196,6 @@
 <body>
 
 <nav>
-    <div style="width: 150px;"></div>
     <div class="nav-links">
         <a href="{% url 'index' %}">ГЛАВНАЯ</a>
         <a href="{% url 'all_posts' %}">МЫСЛИ</a>
