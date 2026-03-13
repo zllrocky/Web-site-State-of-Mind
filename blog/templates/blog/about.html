@@ -29,13 +29,16 @@
         flex: 1.5;
     }
 
+    /* ИСПРАВЛЕНО: Жесткая центровка оранжевого текста */
     .about-subtitle {
         color: #A04000;
         letter-spacing: 5px;
         text-transform: uppercase;
         font-size: 0.8rem;
         display: block;
-        margin-bottom: 20px;
+        margin: 0 auto 20px auto;
+        text-align: center;
+        width: 100%;
     }
 
     .about-title {
@@ -109,6 +112,20 @@
             font-size: 1.05rem;
             line-height: 1.8;
             text-align: center;
+        }
+    }
+
+    /* 4. ИСПРАВЛЕНО: Широкий экран на телефоне (чтобы фото не было гигантским) */
+    @media (orientation: landscape) and (max-height: 600px) {
+        .about-image-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .about-image {
+            max-height: 65vh !important;
+            width: auto !important;
+            object-fit: contain !important;
         }
     }
 </style>

@@ -81,7 +81,7 @@
             }
         }
 
-        /* Оранжевый текст (центрирование усилено через margin: 0 auto) */
+        /* Оранжевый текст */
         .brand-subtitle {
             color: #A04000; text-align: center; text-transform: uppercase;
             letter-spacing: 4px; font-size: 0.8rem; margin: 30px auto 15px auto;
@@ -118,14 +118,14 @@
             .tg-button { width: 100%; padding: 18px 20px; box-sizing: border-box; display: block; }
         }
 
-        /* ПЕРЕВЕРНУТЫЙ ТЕЛЕФОН (Исправлено) */
+        /* ПЕРЕВЕРНУТЫЙ ТЕЛЕФОН (ИСПРАВЛЕНО: фото теперь вписывается и не обрезается) */
         @media (orientation: landscape) and (max-height: 500px) {
             nav { position: absolute; }
             img {
-                width: 100%;
-                height: auto;
-                max-height: none; /* Разрешаем изображению быть естественной высоты */
-                object-fit: cover;
+                max-height: 85vh !important;
+                width: auto !important;
+                object-fit: contain !important;
+                margin: 0 auto !important;
             }
         }
 
