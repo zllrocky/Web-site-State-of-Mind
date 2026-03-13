@@ -30,24 +30,20 @@
         .archive-content { padding: 25px 20px; }
         .archive-img { height: 220px; }
         .archive-post-title { font-size: 1.5rem; }
-        /* Пагинация в ряд, чтобы не занимала много места */
         .pagination { flex-direction: row; gap: 10px; margin-top: 50px; justify-content: center; }
         .page-btn { padding: 10px 15px; font-size: 0.6rem; letter-spacing: 1px; }
         .page-current { font-size: 1.2rem; }
     }
 
-    /* ФИКС ДЛЯ АРХИВА В АЛЬБОМЕ */
     @media (orientation: landscape) and (max-height: 600px) {
         .archive-section { padding-top: 80px !important; }
         .archive-title { font-size: 1.8rem !important; margin-bottom: 30px !important; }
-        .archive-grid { grid-template-columns: repeat(2, 1fr); } /* Делаем 2 колонки, чтобы не листать бесконечно */
+        .archive-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Защита от залипания ховера на мобилках */
     @media (hover: hover) {
         .archive-card:hover { border-color: #A04000; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .page-btn:hover { border-color: #A04000; color: #A04000; transform: translateY(-3px); }
-    }
     }
 </style>
 {% endblock %}
@@ -61,8 +57,8 @@
         <article>
             <a href="{% url 'post_detail' post.pk %}" class="archive-card">
                 {% if post.image %}
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" width="400" height="250" class="archive-img" {%
-                     if forloop.first %}fetchpriority="high" {% else %}loading="lazy" {% endif %}>
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" width="400" height="250" class="archive-img"
+                     {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
                 {% endif %}
 
                 <div class="archive-content">
