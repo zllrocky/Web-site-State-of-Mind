@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment, AuthorProfile, SiteSettings
+from .models import Post, Comment, AuthorProfile, SiteSettings, Review
 
 # Регистрация профиля
 @admin.register(AuthorProfile)
@@ -32,3 +32,8 @@ class CommentAdmin(admin.ModelAdmin):
 class SiteSettingsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return SiteSettings.objects.count() == 0
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'is_favorite')
+    list_editable = ('is_favorite',)

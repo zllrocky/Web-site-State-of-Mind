@@ -2,7 +2,9 @@
 
 {% block extra_css %}
 <style>
-    /* 1. ДЕСКТОП */
+    /* ==============================================================
+       1. ДЕСКТОП И ОСНОВНОЙ БЛОК (ТВОЙ ИСХОДНИК)
+       ============================================================== */
     .about-section {
         padding: 180px 40px 100px 40px;
         max-width: 1200px;
@@ -12,24 +14,17 @@
         align-items: center;
     }
 
-    .about-image-wrapper {
-        flex: 1;
-    }
-
+    .about-image-wrapper { flex: 1; }
     .about-image {
         width: 100%;
-        height: auto; /* ВОЗВРАЩАЕМ АВТО ВЫСОТУ, ЧТОБЫ НЕ МЫЛИЛО */
+        height: auto;
         border: 1px solid #333;
         filter: grayscale(20%);
         display: block;
-        border-radius: 4px; /* Легкое скругление для стиля */
+        border-radius: 4px;
     }
 
-    .about-content {
-        flex: 1.5;
-    }
-
-    /* ИСПРАВЛЕНО: Жесткая центровка оранжевого текста */
+    .about-content { flex: 1.5; }
     .about-subtitle {
         color: #A04000;
         letter-spacing: 5px;
@@ -57,7 +52,6 @@
         text-align: left;
     }
 
-    /* 2. ПЛАНШЕТЫ (iPad) */
     @media (min-width: 769px) and (max-width: 1100px) {
         .about-section {
             flex-direction: column;
@@ -65,69 +59,151 @@
             padding: 140px 40px 80px 40px;
             text-align: center;
         }
-
-        .about-image-wrapper {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            width: 100%;
-        }
-
-        .about-bio {
-            text-align: center;
-            padding: 0 20px;
-        }
+        .about-image-wrapper { width: 100%; max-width: 500px; margin: 0 auto; }
+        .about-content { width: 100%; }
+        .about-bio { text-align: center; padding: 0 20px; }
     }
 
-    /* 3. МОБИЛКА */
     @media (max-width: 768px) {
         .about-section {
             flex-direction: column;
             gap: 40px;
             padding: 110px 20px 60px 20px;
         }
-        .about-image-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-        .about-image {
-            max-width: 90%;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-        .about-content {
-            padding: 0 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .about-title {
-            font-size: 2.8rem;
-            text-align: center;
-        }
-        .about-bio {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            text-align: center;
-        }
+        .about-image-wrapper { width: 100%; display: flex; justify-content: center; }
+        .about-image { max-width: 90%; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .about-content { padding: 0 10px; display: flex; flex-direction: column; align-items: center; }
+        .about-title { font-size: 2.8rem; text-align: center; }
+        .about-bio { font-size: 1.05rem; line-height: 1.8; text-align: center; }
     }
 
-    /* 4. ИСПРАВЛЕНО: Широкий экран на телефоне (чтобы фото не было гигантским) */
     @media (orientation: landscape) and (max-height: 600px) {
-        .about-image-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-        .about-image {
-            max-height: 65vh !important;
-            width: auto !important;
-            object-fit: contain !important;
-        }
+        .about-image-wrapper { display: flex; justify-content: center; width: 100%; }
+        .about-image { max-height: 65vh !important; width: auto !important; object-fit: contain !important; }
     }
+
+    /* ==============================================================
+       5. БЛОК ОТЗЫВОВ
+       ============================================================== */
+    .reviews-section {
+        padding: 40px 20px 100px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .section-title-reviews {
+        text-align: center;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        letter-spacing: 6px;
+        margin-bottom: 40px;
+        color: #FAF9F6;
+        text-transform: uppercase;
+    }
+
+    .zoom-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0);
+        backdrop-filter: blur(0px);
+        z-index: 2000;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+    .zoom-overlay.active {
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(5px);
+    }
+
+    .reviewsSwiper {
+        width: 320px;
+        height: 540px;
+        z-index: 2001;
+        overflow: visible !important;
+    }
+
+    .reviewsSwiper.is-zooming { z-index: 3000 !important; }
+
+    .review-slide {
+        border-radius: 20px;
+        background: transparent;
+        overflow: visible !important;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .review-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 20px;
+        border: 1px solid #222;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        user-select: none;
+        -webkit-user-drag: none;
+        cursor: grab;
+        transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+        background: #080808;
+    }
+
+    .review-img:active { cursor: grabbing; }
+
+    .review-img.zoomed {
+        transform: scale(1.6) translateZ(0);
+        box-shadow: 0 40px 100px rgba(0,0,0,1);
+        border-color: #555;
+        cursor: grabbing;
+        position: relative;
+        z-index: 9999;
+    }
+
+    /* МОБИЛКА ВЕРТИКАЛЬНАЯ */
+    @media (max-width: 768px) {
+        .reviewsSwiper { width: 260px; height: 460px; }
+        .review-img.zoomed { transform: scale(1.3) translateZ(0); }
+    }
+
+    /* МОБИЛКА АЛЬБОМНАЯ: ЖЕЛЕЗОБЕТОННЫЙ ФИКС ЧЕРЕЗ ПРОЦЕНТЫ ЭКРАНА (vh) */
+    @media (orientation: landscape) and (max-height: 600px) {
+        .reviews-section { padding: 10px 20px 20px 20px !important; }
+        .section-title-reviews { margin-bottom: 5px; font-size: 1.2rem; }
+
+        .reviewsSwiper {
+            /* Колода всегда берет ровно 75% от высоты экрана, какой бы она ни была */
+            height: 75vh !important;
+            width: 45vh !important;
+            padding-bottom: 10px !important;
+        }
+        .review-img { border-radius: 8px; }
+
+        /* Зум 1.2 превратит 75vh в 90vh. Идеально влазит в экран, оставляя 10% воздуха! */
+        .review-img.zoomed { transform: scale(1.2) translateZ(0); }
+
+        .review-nav { margin-top: 5px; gap: 40px; }
+        .nav-btn { font-size: 1.8rem; }
+    }
+
+    /* Кнопки навигации */
+    .review-nav {
+        display: flex;
+        gap: 60px;
+        margin-top: 30px;
+        z-index: 2001;
+    }
+    .nav-btn {
+        color: #A04000;
+        font-size: 2.5rem;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: 0.3s ease;
+        user-select: none;
+    }
+    .nav-btn:hover { opacity: 1; transform: scale(1.1); }
 </style>
 {% endblock %}
 
@@ -152,4 +228,97 @@
         </div>
     </div>
 </section>
+
+{% if reviews %}
+<div id="zoomOverlay" class="zoom-overlay"></div>
+
+<section class="reviews-section">
+    <h2 class="section-title-reviews">ОТКЛИКИ</h2>
+
+    <div class="swiper reviewsSwiper">
+        <div class="swiper-wrapper">
+            {% for review in reviews %}
+            <div class="swiper-slide review-slide">
+                <img src="{{ review.image.url }}"
+                     class="review-img"
+                     alt="Отзыв Юли"
+                     {% if not forloop.first %}loading="lazy" decoding="async"{% endif %}>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="review-nav">
+        <div class="nav-btn prev-card">←</div>
+        <div class="nav-btn next-card">→</div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const swiperContainer = document.querySelector('.reviewsSwiper');
+    if (swiperContainer) {
+
+        var swiper = new Swiper(".reviewsSwiper", {
+            effect: "cards",
+            grabCursor: true,
+            cardsEffect: {
+                perSlideRotate: 2,
+                perSlideOffset: 12,
+                slideShadows: false,
+            },
+            navigation: {
+                nextEl: ".next-card",
+                prevEl: ".prev-card",
+            },
+        });
+
+        // ПЕРЕСЧЕТ SWIPER ПРИ ПЕРЕВОРОТЕ ТЕЛЕФОНА
+        window.addEventListener('resize', function() {
+            setTimeout(() => {
+                if (swiper) swiper.update();
+            }, 200);
+        });
+
+        const overlay = document.getElementById('zoomOverlay');
+        const images = document.querySelectorAll('.review-img');
+        let pressTimer;
+        let activeImg = null;
+
+        function startPress(e) {
+            if (e.button === 2) return;
+
+            activeImg = this;
+            pressTimer = setTimeout(() => {
+                if(activeImg) {
+                    activeImg.classList.add('zoomed');
+                    overlay.classList.add('active');
+                    swiperContainer.classList.add('is-zooming');
+                }
+            }, 150);
+        }
+
+        function cancelPress() {
+            clearTimeout(pressTimer);
+            if (activeImg) {
+                activeImg.classList.remove('zoomed');
+                overlay.classList.remove('active');
+                swiperContainer.classList.remove('is-zooming');
+                activeImg = null;
+            }
+        }
+
+        images.forEach(img => {
+            img.addEventListener('pointerdown', startPress);
+            img.addEventListener('contextmenu', e => e.preventDefault());
+        });
+
+        window.addEventListener('pointerup', cancelPress);
+        swiper.on('touchMove', cancelPress);
+    }
+});
+</script>
 {% endblock %}

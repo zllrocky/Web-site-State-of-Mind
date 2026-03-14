@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment, AuthorProfile, SiteSettings
+from .models import Post, Comment, AuthorProfile, SiteSettings, Review
 from django.contrib import messages
 from .forms import CommentForm
 from django.db.models import Count, Q
@@ -65,7 +65,12 @@ def index(request):
 # 2. СТРАНИЦА "ОБ АВТОРЕ"
 def about(request):
     author = AuthorProfile.objects.first()
-    return render(request, 'blog/about.html', {'author': author})
+    reviews = Review.objects.filter(is_favorite=True)
+    context = {
+        'author': author,
+        'reviews': reviews
+    }
+    return render(request, 'blog/about.html', context)
 
 
 # 3. ВСЕ ПУБЛИКАЦИИ (Архив с пагинацией)

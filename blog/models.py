@@ -75,7 +75,6 @@ class AuthorProfile(models.Model):
     def __str__(self):
         return self.name
 
-
 # 4. МОДЕЛЬ КОММЕНТАРИЕВ
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
@@ -113,3 +112,16 @@ class SiteSettings(models.Model):
 
     def __str__(self):
         return "Настройки оформления"
+
+class Review(models.Model):
+    image = models.ImageField("Скриншот отзыва", upload_to='reviews/')
+    is_favorite = models.BooleanField("Показывать в карусели", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Отзыв от {self.created_at.strftime('%d.%m.%Y')}"
