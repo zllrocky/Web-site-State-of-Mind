@@ -135,6 +135,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        /* Убираем синюю вспышку при клике на мобилках */
+        -webkit-tap-highlight-color: transparent;
     }
 
     .review-img {
@@ -144,11 +146,18 @@
         border-radius: 20px;
         border: 1px solid #222;
         box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        user-select: none;
-        -webkit-user-drag: none;
+        background: #080808;
         cursor: grab;
         transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
-        background: #080808;
+
+        /* ФИКС ДЛЯ МОБИЛОК: Запрещаем выделение и системное меню */
+        -webkit-touch-callout: none; /* iOS Safari: отключает меню (сохранить фото и т.д.) */
+        -webkit-user-select: none;   /* Safari */
+        -khtml-user-select: none;    /* Konqueror HTML */
+        -moz-user-select: none;      /* Firefox */
+        -ms-user-select: none;       /* Internet Explorer/Edge */
+        user-select: none;           /* Запрещает выделение блока синим */
+        -webkit-user-drag: none;     /* Запрещает перетаскивание самой картинки браузером */
     }
 
     .review-img:active { cursor: grabbing; }
@@ -174,14 +183,12 @@
         .section-title-reviews { margin-bottom: 5px; font-size: 1.2rem; }
 
         .reviewsSwiper {
-            /* Колода всегда берет ровно 75% от высоты экрана, какой бы она ни была */
             height: 75vh !important;
             width: 45vh !important;
             padding-bottom: 10px !important;
         }
         .review-img { border-radius: 8px; }
 
-        /* Зум 1.2 превратит 75vh в 90vh. Идеально влазит в экран, оставляя 10% воздуха! */
         .review-img.zoomed { transform: scale(1.2) translateZ(0); }
 
         .review-nav { margin-top: 5px; gap: 40px; }
@@ -242,7 +249,7 @@
                 <img src="{{ review.image.url }}"
                      class="review-img"
                      alt="Отзыв Юли"
-                     {% if not forloop.first %}loading="lazy" decoding="async"{% endif %}>
+                     {% if not forloop.first %}loading="lazy" decoding="async" {% endif %}>
             </div>
             {% endfor %}
         </div>
@@ -258,67 +265,67 @@
 
 {% block extra_js %}
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const swiperContainer = document.querySelector('.reviewsSwiper');
-    if (swiperContainer) {
+    document.addEventListener("DOMContentLoaded", function() {
+        const swiperContainer = document.querySelector('.reviewsSwiper');
+        if (swiperContainer) {
 
-        var swiper = new Swiper(".reviewsSwiper", {
-            effect: "cards",
-            grabCursor: true,
-            cardsEffect: {
-                perSlideRotate: 2,
-                perSlideOffset: 12,
-                slideShadows: false,
-            },
-            navigation: {
-                nextEl: ".next-card",
-                prevEl: ".prev-card",
-            },
-        });
+            var swiper = new Swiper(".reviewsSwiper", {
+                effect: "cards",
+                grabCursor: true,
+                cardsEffect: {
+                    perSlideRotate: 2,
+                    perSlideOffset: 12,
+                    slideShadows: false,
+                },
+                navigation: {
+                    nextEl: ".next-card",
+                    prevEl: ".prev-card",
+                },
+            });
 
-        // ПЕРЕСЧЕТ SWIPER ПРИ ПЕРЕВОРОТЕ ТЕЛЕФОНА
-        window.addEventListener('resize', function() {
-            setTimeout(() => {
-                if (swiper) swiper.update();
-            }, 200);
-        });
+            // ПЕРЕСЧЕТ SWIPER ПРИ ПЕРЕВОРОТЕ ТЕЛЕФОНА
+            window.addEventListener('resize', function() {
+                setTimeout(() => {
+                    if (swiper) swiper.update();
+                }, 200);
+            });
 
-        const overlay = document.getElementById('zoomOverlay');
-        const images = document.querySelectorAll('.review-img');
-        let pressTimer;
-        let activeImg = null;
+            const overlay = document.getElementById('zoomOverlay');
+            const images = document.querySelectorAll('.review-img');
+            let pressTimer;
+            let activeImg = null;
 
-        function startPress(e) {
-            if (e.button === 2) return;
+            function startPress(e) {
+                if (e.button === 2) return;
 
-            activeImg = this;
-            pressTimer = setTimeout(() => {
-                if(activeImg) {
-                    activeImg.classList.add('zoomed');
-                    overlay.classList.add('active');
-                    swiperContainer.classList.add('is-zooming');
-                }
-            }, 150);
-        }
-
-        function cancelPress() {
-            clearTimeout(pressTimer);
-            if (activeImg) {
-                activeImg.classList.remove('zoomed');
-                overlay.classList.remove('active');
-                swiperContainer.classList.remove('is-zooming');
-                activeImg = null;
+                activeImg = this;
+                pressTimer = setTimeout(() => {
+                    if(activeImg) {
+                        activeImg.classList.add('zoomed');
+                        overlay.classList.add('active');
+                        swiperContainer.classList.add('is-zooming');
+                    }
+                }, 150);
             }
+
+            function cancelPress() {
+                clearTimeout(pressTimer);
+                if (activeImg) {
+                    activeImg.classList.remove('zoomed');
+                    overlay.classList.remove('active');
+                    swiperContainer.classList.remove('is-zooming');
+                    activeImg = null;
+                }
+            }
+
+            images.forEach(img => {
+                img.addEventListener('pointerdown', startPress);
+                img.addEventListener('contextmenu', e => e.preventDefault());
+            });
+
+            window.addEventListener('pointerup', cancelPress);
+            swiper.on('touchMove', cancelPress);
         }
-
-        images.forEach(img => {
-            img.addEventListener('pointerdown', startPress);
-            img.addEventListener('contextmenu', e => e.preventDefault());
-        });
-
-        window.addEventListener('pointerup', cancelPress);
-        swiper.on('touchMove', cancelPress);
-    }
-});
+    });
 </script>
 {% endblock %}
