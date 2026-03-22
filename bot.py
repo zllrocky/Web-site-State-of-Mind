@@ -57,9 +57,9 @@ async def process_about(callback: CallbackQuery):
 async def process_services(callback: CallbackQuery):
     text = (
         "<b>Услуги и цены:</b>\n\n"
-        "🔹 Первая сессия (45 минут) — 300 грн\n"
-        "🔹 Последующие сессии (60 минут) — 400 грн\n"
-        "🔹 Пакет из 5 сессий — 1750 грн"
+        "🔹 Ознакомительная сессия (15 минут) — БЕЗОПЛАТНО\n"
+        "🔹 Последующие сессии (60 минут) — 500 грн\n"
+        "🔹 Пакет из 5 сессий — 2250 грн"
     )
     await callback.message.answer(text, reply_markup=services_kb, parse_mode="HTML")
     await callback.answer()
