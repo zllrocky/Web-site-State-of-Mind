@@ -19,7 +19,7 @@ def compress_image(image, size=(1200, 800)):
 
     output = BytesIO()
     # Сохраняем в самом современном формате с качеством 75%
-    img.save(output, format='WebP', quality=95, method=6)
+    img.save(output, format='WebP', quality=90, method=6)
     output.seek(0)
 
     # Формируем файл для Django с расширением .webp
@@ -63,9 +63,8 @@ class AuthorProfile(models.Model):
     photo = models.ImageField(upload_to='profile/', verbose_name='Фото профиля')
 
     def save(self, *args, **kwargs):
-        # Аватарку жмём сильнее (до 400px)
         if self.photo and not self.photo.name.endswith('.webp'):
-            self.photo = compress_image(self.photo, size=(400, 400))
+            self.photo = compress_image(self.photo, size=(1500, 1500))
         super().save(*args, **kwargs)
 
     class Meta:
