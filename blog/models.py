@@ -19,7 +19,7 @@ def compress_image(image, size=(1200, 800)):
 
     output = BytesIO()
     # Сохраняем в самом современном формате с качеством 75%
-    img.save(output, format='WebP', quality=75)
+    img.save(output, format='WebP', quality=95, method=6)
     output.seek(0)
 
     # Формируем файл для Django с расширением .webp
