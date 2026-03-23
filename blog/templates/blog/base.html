@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>{% block title %}State of Mind{% endblock %}</title>
 
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.stateofmind-space.com{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}{% block title %}State of Mind{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block meta_description %}Авторский блог и коучинг Юлии.{% endblock %}">
+    <meta property="og:image"
+          content="{% block og_image %}https://www.stateofmind-space.com/static/images/logo_for_share.jpg{% endblock %}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block og_title %}{% endblock %}">
+    <meta name="twitter:description" content="{% block meta_description %}{% endblock %}">
+    <meta name="twitter:image" content="{% block og_image %}{% endblock %}">
+
     <style>
         html, body {
             background-color: #080808 !important;

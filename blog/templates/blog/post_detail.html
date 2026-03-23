@@ -1,15 +1,17 @@
 {% extends 'blog/base.html' %}
 
-{% block og_title %}{{ post.title }}{% endblock %}
-{% block og_image %}{{ post.image.url }}{% endblock %}
 {% block title %}{{ post.title }} | State of Mind{% endblock %}
+
+{% block og_title %}{{ post.title }}{% endblock %}
 
 {% block meta_description %}{{ post.content|striptags|truncatewords:20 }}{% endblock %}
 
+{% block og_image %}https://www.stateofmind-space.com{{ post.image.url }}{% endblock %}
+
 {% block extra_head %}
-    {% if post.image %}
-        <link rel="preload" as="image" href="{{ post.image.url }}">
-    {% endif %}
+{% if post.image %}
+<link rel="preload" as="image" href="{{ post.image.url }}">
+{% endif %}
 {% endblock %}
 
 {% block extra_css %}
@@ -129,35 +131,41 @@
 
     <div class="comments-section" id="comments">
         <h3 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin-bottom: 40px; font-size: clamp(1.2rem, 3vw, 1.5rem); text-align: center;">
-            ОТКЛИКИ (<span style="font-family: 'Montserrat', sans-serif; font-weight: 600;">{{ post.comments.count }}</span>)
+            ОТКЛИКИ (<span
+                style="font-family: 'Montserrat', sans-serif; font-weight: 600;">{{ post.comments.count }}</span>)
         </h3>
 
         <div class="comments-list-wrapper">
             {% for comment in comments %}
-                {% if not comment.parent %}
-                <div class="comment-card">
-                    <span class="author-name">{{ comment.author_name }}</span>
-                    <div class="comment-text">{{ comment.text }}</div>
-                    <button class="reply-btn"
-                            style="background:none; border:none; color:#A04000; cursor:pointer; font-size:0.7rem; letter-spacing:1px; text-transform:uppercase; padding:0;"
-                            onclick="setParent('{{ comment.id }}', '{{ comment.author_name }}')">Ответить</button>
+            {% if not comment.parent %}
+            <div class="comment-card">
+                <span class="author-name">{{ comment.author_name }}</span>
+                <div class="comment-text">{{ comment.text }}</div>
+                <button class="reply-btn"
+                        style="background:none; border:none; color:#A04000; cursor:pointer; font-size:0.7rem; letter-spacing:1px; text-transform:uppercase; padding:0;"
+                        onclick="setParent('{{ comment.id }}', '{{ comment.author_name }}')">Ответить
+                </button>
 
-                    {% for reply in comment.replies.all %}
-                        {% if reply.is_approved %}
-                        <div style="margin-left: 20px; border-left: 1px solid #222; padding-left: 20px; margin-top: 20px;">
-                            <span class="author-name" style="font-size: 0.7rem;">{{ reply.author_name }}</span>
-                            <div class="comment-text" style="font-size: 0.95rem;">{{ reply.text }}</div>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
+                {% for reply in comment.replies.all %}
+                {% if reply.is_approved %}
+                <div style="margin-left: 20px; border-left: 1px solid #222; padding-left: 20px; margin-top: 20px;">
+                    <span class="author-name" style="font-size: 0.7rem;">{{ reply.author_name }}</span>
+                    <div class="comment-text" style="font-size: 0.95rem;">{{ reply.text }}</div>
                 </div>
                 {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
 
         <div class="comment-form" id="comment-form-anchor">
-            <h4 id="form-title" style="font-family: 'Cormorant Garamond'; text-align: center; color: #A04000; letter-spacing: 4px; margin-bottom: 20px; font-size: 1.2rem;">ОСТАВИТЬ ОТКЛИК</h4>
-            <a href="javascript:void(0)" id="cancel-reply" onclick="cancelReply()" style="display:none; color: #566573; font-size: 0.6rem; text-decoration: none; margin-bottom: 15px; text-align: center; display: block; letter-spacing: 2px;">ОТМЕНИТЬ ОТВЕТ</a>
+            <h4 id="form-title"
+                style="font-family: 'Cormorant Garamond'; text-align: center; color: #A04000; letter-spacing: 4px; margin-bottom: 20px; font-size: 1.2rem;">
+                ОСТАВИТЬ ОТКЛИК</h4>
+            <a href="javascript:void(0)" id="cancel-reply" onclick="cancelReply()"
+               style="display:none; color: #566573; font-size: 0.6rem; text-decoration: none; margin-bottom: 15px; text-align: center; display: block; letter-spacing: 2px;">ОТМЕНИТЬ
+                ОТВЕТ</a>
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="parent_id" id="parent_id_input" value="">
@@ -183,7 +191,8 @@
             <div class="swiper-slide">
                 <a href="{% url 'post_detail' p.pk %}" class="card-link">
                     {% if p.image %}
-                    <img src="{{ p.image.url }}" class="slide-img" loading="lazy" width="400" height="280" alt="{{ p.title }}">
+                    <img src="{{ p.image.url }}" class="slide-img" loading="lazy" width="400" height="280"
+                         alt="{{ p.title }}">
                     {% endif %}
                     <div class="slide-text">
                         <span class="category">{{ p.get_category_display }}</span>
@@ -199,7 +208,8 @@
             <div class="swiper-slide all-posts-slide">
                 <a href="{% url 'all_posts' %}" style="text-align: center; text-decoration: none; display: block;">
                     <div class="arrow-circle">→</div>
-                    <p style="letter-spacing: 4px; font-size: 0.65rem; color: #7F8C8D; text-transform: uppercase;">Весь архив</p>
+                    <p style="letter-spacing: 4px; font-size: 0.65rem; color: #7F8C8D; text-transform: uppercase;">Весь
+                        архив</p>
                 </a>
             </div>
         </div>
