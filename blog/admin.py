@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Post, Comment, AuthorProfile, SiteSettings, Review
+from .models import Post, Comment, AuthorProfile, SiteSettings, Review, BotSubscriber
+
+@admin.register(BotSubscriber)
+class BotSubscriberAdmin(admin.ModelAdmin):
+    list_display = ('chat_id', 'joined_at')
 
 # Регистрация профиля
 @admin.register(AuthorProfile)

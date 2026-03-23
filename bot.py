@@ -1,13 +1,27 @@
 import os
-from dotenv import load_dotenv
+import django
 import asyncio
+from asgiref.sync import sync_to_async
+from dotenv import load_dotenv
+
+# 1. Сначала грузим настройки из .env
+load_dotenv()
+
+# 2. Указываем путь к настройкам проекта
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'elite_coach.settings')
+
+# 3. ЗАПУСКАЕМ Django (без этого модели не будут работать)
+django.setup()
+
+# 4. ТЕПЕРЬ импортируем модель (когда база данных подключена)
+from blog.models import BotSubscriber
+
+# 5. Дальше всё остальное для бота
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-load_dotenv()
-
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TOKEN = os.getenv('BOT_TOKEN')
 YULIA_USERNAME = os.getenv('YULIA_USERNAME')
 
 # Формируем умную ссылку с предзаполненным текстом
@@ -38,6 +52,8 @@ services_kb = InlineKeyboardMarkup(inline_keyboard=[
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
+    # Эта строка сохраняет ID пользователя в базу данных сайта
+    await sync_to_async(BotSubscriber.objects.get_or_create)(chat_id=message.chat.id)
     text = (
         "Добро пожаловать в пространство <b>State of Mind</b>! 🌿\n\n"
         "Выберите нужный раздел ниже, чтобы узнать детали или сразу записаться на сессию:"

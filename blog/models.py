@@ -4,6 +4,12 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 
+class BotSubscriber(models.Model):
+    chat_id = models.BigIntegerField(unique=True)
+    joined_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.chat_id)
 
 # 1. ОБЩАЯ ФУНКЦИЯ (Наш "завод" по переработке картинок в WebP)
 def compress_image(image, size=(1200, 800)):
