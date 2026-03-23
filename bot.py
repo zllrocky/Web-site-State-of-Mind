@@ -1,6 +1,7 @@
 import os
 import django
 import asyncio
+import urllib.parse
 from asgiref.sync import sync_to_async
 from dotenv import load_dotenv
 
@@ -24,8 +25,12 @@ from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 TOKEN = os.getenv('BOT_TOKEN')
 YULIA_USERNAME = os.getenv('YULIA_USERNAME')
 
+# НОВОЕ: Готовим текст и превращаем пробелы в безопасные символы
+preset_message = "Здравствуйте, Юлия! Я из бота State of Mind, хочу записаться на ознакомительную сессию."
+encoded_message = urllib.parse.quote(preset_message)
+
 # Формируем умную ссылку с предзаполненным текстом
-contact_url = f"https://t.me/{YULIA_USERNAME}"
+contact_url = f"https://t.me/{YULIA_USERNAME}?text={encoded_message}"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
