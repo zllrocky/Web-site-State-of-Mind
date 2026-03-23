@@ -11,7 +11,7 @@ import threading
 
 def send_telegram_message(text):
     # Безопасно берем ключи из настроек (settings.py -> .env)
-    bot_token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+    bot_token = getattr(settings, 'BOT_TOKEN', None)
     chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
 
     if not bot_token or not chat_id:
