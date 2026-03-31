@@ -149,7 +149,7 @@
             <div class="story-content">
                 <span style="color: #A04000; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">Main Editorial</span>
                 <h2>{{ featured_post.title }}</h2>
-                <p>{{ featured_post.content|truncatewords:25 }}</p>
+                <p>{{ featured_post.short_description|default:featured_post.content|striptags|truncatechars:180 }}</p>
 
                 <div class="comment-pill">
                     <i>{{ featured_post.approved_comments_count }}</i> МЫСЛЕЙ В ОБСУЖДЕНИИ

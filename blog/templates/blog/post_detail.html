@@ -2,7 +2,8 @@
 
 {% block title %}{{ post.title }} | State of Mind{% endblock %}
 {% block og_title %}{{ post.title }}{% endblock %}
-{% block meta_description %}{{ post.short_description|truncatechars:160|default:post.title }}{% endblock %}
+{% block seo_description %}{{ post.short_description|striptags|truncatechars:160|default:post.title }}{% endblock %}
+{% block og_description %}{{ post.short_description|striptags|truncatechars:160|default:post.title }}{% endblock %}
 {% block og_image %}https://www.stateofmind-space.com{{ post.image.url }}{% endblock %}
 
 {% block extra_head %}
