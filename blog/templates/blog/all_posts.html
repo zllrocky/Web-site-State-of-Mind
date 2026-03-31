@@ -67,7 +67,7 @@
                     <div class="archive-comment-pill">
                         <i>{{ post.approved_comments_count }}</i> МЫСЛЕЙ В ОБСУЖДЕНИИ
                     </div>
-                    <p class="archive-excerpt">{{ post.short_description|default:post.content|striptags|truncatechars:120 }}</p>
+                    <p class="archive-excerpt">{{ post.short_description|default:post.content|striptags|safe|truncatechars:120 }}</p>
                 </div>
             </a>
         </article>
