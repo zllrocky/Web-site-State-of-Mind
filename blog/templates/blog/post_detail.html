@@ -2,7 +2,7 @@
 
 {% block title %}{{ post.title }} | State of Mind{% endblock %}
 {% block og_title %}{{ post.title }}{% endblock %}
-{% block meta_description %}{{ post.content|striptags|truncatewords:20 }}{% endblock %}
+{% block meta_description %}{{ post.short_description|truncatechars:160|default:post.title }}{% endblock %}
 {% block og_image %}https://www.stateofmind-space.com{{ post.image.url }}{% endblock %}
 
 {% block extra_head %}
@@ -48,7 +48,25 @@
 
     h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; text-align: center; margin-bottom: 40px; }
     .category-tag { display: block; text-align: center; text-transform: uppercase; letter-spacing: 5px; color: #A04000; font-size: 0.75rem; margin-bottom: 25px; }
-    .article-body { font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.8; color: #BDC3C7; white-space: pre-line; margin-bottom: 80px; font-weight: 300; }
+    .article-body { font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.8; color: #BDC3C7; margin-bottom: 80px; font-weight: 300; }
+
+    /* СТИЛИ ДЛЯ РЕДАКТОРА CKEDITOR */
+    .article-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #FAF9F6; margin-top: 60px; margin-bottom: 25px; line-height: 1.2; }
+    .article-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #FAF9F6; margin-top: 40px; margin-bottom: 15px; }
+    .article-body p { margin-bottom: 25px; }
+    .article-body ul { list-style-type: disc; padding-left: 25px; margin-bottom: 35px; color: #BDC3C7; }
+    .article-body li { margin-bottom: 12px; }
+    .article-body li p { margin: 0 !important; display: inline !important; } /* Фикс для параграфов внутри списков */
+    .article-body blockquote {
+        border-left: 3px solid #A04000;
+        margin: 40px 0;
+        padding: 20px 25px;
+        font-style: italic;
+        color: #FAF9F6;
+        background: rgba(160, 64, 0, 0.05);
+        border-radius: 0 8px 8px 0;
+    }
+    .article-body strong { color: #FAF9F6; font-weight: 600; }
 
     /* АДАПТИВНОСТЬ */
     @media (max-width: 1100px) {
