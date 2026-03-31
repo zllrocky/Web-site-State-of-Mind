@@ -124,7 +124,7 @@
 <div class="container">
     <span class="category-tag">{{ post.get_category_display }}</span>
     <h1>{{ post.title }}</h1>
-    <div class="article-body">{{ post.content }}</div>
+    <div class="article-body">{{ post.content|safe }}</div>
 
     <div class="comments-section" id="comments">
         <h3 style="font-family: 'Cormorant Garamond'; letter-spacing: 5px; margin-bottom: 40px; font-size: clamp(1.2rem, 3vw, 1.5rem); text-align: center;">

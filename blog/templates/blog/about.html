@@ -217,7 +217,7 @@
         <span class="about-subtitle">The Mind Behind the Brand</span>
         <h1 class="about-title">{{ author.name }}</h1>
         <div class="about-bio">
-            {{ author.bio|linebreaks }}
+            {{ author.bio|safe }}
         </div>
     </div>
 </section>

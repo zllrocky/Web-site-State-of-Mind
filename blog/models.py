@@ -3,6 +3,7 @@ from io import BytesIO
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from ckeditor.fields import RichTextField
 
 class BotSubscriber(models.Model):
     chat_id = models.BigIntegerField(unique=True)
@@ -44,7 +45,9 @@ class Post(models.Model):
     ]
 
     title = models.CharField(max_length=200, verbose_name='Заголовок')
-    content = models.TextField(verbose_name='Текст статьи')
+    short_description = models.TextField(verbose_name='Превью для карточки', blank=True,
+                                         null=True)
+    content = RichTextField(verbose_name='Текст статьи')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES,
                                 default='THOUGHTS', verbose_name='Категория')
     image = models.ImageField(upload_to='blog_photos/', blank=True, null=True,
@@ -65,7 +68,7 @@ class Post(models.Model):
 # 3. МОДЕЛЬ АВТОРА
 class AuthorProfile(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя автора')
-    bio = models.TextField(verbose_name='О себе')
+    bio = RichTextField(verbose_name='О себе')
     photo = models.ImageField(upload_to='profile/', verbose_name='Фото профиля')
 
     def save(self, *args, **kwargs):
